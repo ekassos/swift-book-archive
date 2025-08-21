@@ -1,0 +1,399 @@
+# Copyright 2025 Evangelos Kassos
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Generate Swift Book PDFs
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: 'Optional specific commit SHA of swift-book to build from'
+        required: false
+  schedule:
+    - cron: '18 0 * * *'  # Every day at 00:18 UTC
+
+jobs:
+  generate-pdfs:
+    runs-on: macos-latest
+    outputs:
+      matrix: ${{ steps.missed_tags.outputs.matrix }}
+      latest_sha: ${{ steps.fetch_target.outputs.latest_sha }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read stored swift-book commit SHA
+        id: read_last_sha
+        run: |
+          if [ -f .github/sha ]; then
+            echo "LAST_BUILT_SHA=$(cat .github/sha)" >> $GITHUB_ENV
+          else
+            echo "LAST_BUILT_SHA=" >> $GITHUB_ENV
+          fi
+
+      - name: Fetch target commit info
+        id: fetch_target
+        env:
+          INPUT_SHA: ${{ github.event.inputs.sha }}
+          GITHUB_API_TOKEN: ${{ github.token }}
+        run: |
+          if [ -n "$INPUT_SHA" ]; then
+            INPUT_SHA_SHORT=$(echo "$INPUT_SHA" | cut -c1-7)
+            echo "Using manually provided SHA: $INPUT_SHA_SHORT"
+            COMMIT_JSON=$(curl -s -H "Authorization: Bearer $GITHUB_API_TOKEN" \
+              "https://api.github.com/repos/swiftlang/swift-book/commits/$INPUT_SHA")
+          else
+            echo "Fetching latest commit from main..."
+            COMMIT_JSON=$(curl -s -H "Authorization: Bearer $GITHUB_API_TOKEN" \
+              "https://api.github.com/repos/swiftlang/swift-book/commits?sha=main&per_page=1")
+            COMMIT_JSON=$(echo "$COMMIT_JSON" | jq '.[0]')
+          fi
+
+          LATEST_SHA=$(echo "$COMMIT_JSON" | jq -r '.sha')
+          LATEST_SHA_SHORT=$(echo "$LATEST_SHA" | cut -c1-7)
+
+          echo "LATEST_SHA=$LATEST_SHA" >> $GITHUB_ENV
+          echo "LATEST_SHA_SHORT=$LATEST_SHA_SHORT" >> $GITHUB_ENV
+          echo "latest_sha=$LATEST_SHA" >> $GITHUB_OUTPUT
+
+      - name: Clone swift-book repo
+        run: |
+          git clone https://github.com/swiftlang/swift-book.git swift-book-repo
+          cd swift-book-repo
+          git fetch --tags
+
+      - name: Find missed tagged commits
+        id: missed_tags
+        run: |
+          cd swift-book-repo
+          LAST_BUILT_SHA="$LAST_BUILT_SHA"
+          TARGET_SHA="$LATEST_SHA"
+
+          if [ -z "$LAST_BUILT_SHA" ]; then
+            echo "First run: no previous SHA. Only building target commit."
+          elif [ "$LAST_BUILT_SHA" = "$TARGET_SHA" ]; then
+            echo "No new commits since last build. Skipping."
+            echo 'matrix={"commits":[]}' >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          LAST_BUILT_SHA_SHORT=$(echo "$LAST_BUILT_SHA" | cut -c1-7)
+          TARGET_SHA_SHORT=$(echo "$TARGET_SHA" | cut -c1-7)
+
+          echo "Finding tags between $LAST_BUILT_SHA_SHORT and $TARGET_SHA_SHORT ..."
+          MISSED_TAGS=$(git log --format=%H $LAST_BUILT_SHA..$TARGET_SHA | \
+            xargs -I{} git tag --points-at {} | sort -u)
+
+          echo "MISSED_TAGS<<EOF" >> $GITHUB_ENV
+          echo "$MISSED_TAGS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+          # Build JSON array for matrix: tagged commits first (oldest to newest), then target SHA
+          # Sort tagged commits chronologically (oldest first) and convert to short SHAs
+          if [ -n "$MISSED_TAGS" ]; then
+            SORTED_TAG_SHAS=$(echo "$MISSED_TAGS" | while read tag; do
+              if [ -n "$tag" ]; then
+                COMMIT_SHA=$(git rev-list -n 1 "$tag")
+                COMMIT_DATE=$(git show -s --format=%ct "$COMMIT_SHA")
+                COMMIT_SHA_SHORT=$(echo "$COMMIT_SHA" | cut -c1-7)
+                echo "$COMMIT_DATE $COMMIT_SHA_SHORT"
+              fi
+            done | sort -n | cut -d' ' -f2)
+            TAGS_JSON=$(echo "$SORTED_TAG_SHAS" | jq -R . | jq -s .)
+          else
+            SORTED_TAG_SHAS=""
+            TAGS_JSON="[]"
+          fi
+
+          echo "SORTED_TAG_SHAS:"
+          echo "$SORTED_TAG_SHAS"
+
+          echo "TAGS_JSON:"
+          echo "$TAGS_JSON"
+
+          echo "COMMITS_JSON:"
+          echo "$COMMITS_JSON"
+          
+          # Create matrix with chronologically ordered short SHAs, ensuring no duplicates
+          TARGET_SHA_SHORT=$(echo "$TARGET_SHA" | cut -c1-7)
+          COMMITS_JSON=$(jq -n -c \
+            --arg target "$TARGET_SHA_SHORT" \
+            --argjson tags "$TAGS_JSON" \
+            '{commits: ($tags + [$target]) | 
+              reduce .[] as $c ([]; if index($c) then . else . + [$c] end)}')
+          
+          # Use the GITHUB_OUTPUT heredoc format to safely write multi-line or JSON outputs
+          echo "matrix<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMITS_JSON" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+  build-pdfs:
+    needs: generate-pdfs
+    runs-on: macos-latest
+    if: needs.generate-pdfs.outputs.matrix != '{"commits":[]}'
+    strategy:
+      matrix:
+        sha: ${{ fromJson(needs.generate-pdfs.outputs.matrix).commits }}
+      max-parallel: 1
+    steps:
+      - name: Skip if noop
+        if: ${{ matrix.sha == 'noop' }}
+        run: echo "No work to do"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update main branch and tags
+        run: git checkout main && git pull --tags origin main
+
+      - name: Check if SHA already built
+        id: check_sha
+        env:
+          SHA: ${{ matrix.sha }}
+        run: |
+          if [ -f .github/sha ]; then
+            LAST_BUILT_SHA=$(cat .github/sha)
+            if [ "$SHA" = "$LAST_BUILT_SHA" ]; then
+              SHA_SHORT=$(echo "$SHA" | cut -c1-7)
+              echo "SHA $SHA_SHORT already built, skipping..."
+              echo "skip=true" >> $GITHUB_OUTPUT
+            else
+              SHA_SHORT=$(echo "$SHA" | cut -c1-7)
+              LAST_BUILT_SHA_SHORT=$(echo "$LAST_BUILT_SHA" | cut -c1-7)
+              echo "SHA $SHA_SHORT is different from last built SHA $LAST_BUILT_SHA_SHORT, proceeding..."
+              echo "skip=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "No previous SHA found, proceeding with build..."
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download swift-book repo at commit
+        if: steps.check_sha.outputs.skip != 'true'
+        env:
+          SHA: ${{ matrix.sha }}
+        run: |
+          git clone https://github.com/swiftlang/swift-book.git swift-book-repo
+          cd swift-book-repo
+          git checkout "$SHA"
+
+      - name: Fetch specific swift-book commit SHA, message, and tag
+        if: steps.check_sha.outputs.skip != 'true'
+        id: swiftbook_sha
+        env:
+          SHA: ${{ matrix.sha }}
+        run: |
+          # Fetch commit info for the given SHA
+          COMMIT_JSON=$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
+            "https://api.github.com/repos/swiftlang/swift-book/commits/$SHA")
+          # Validate if
+          if ! echo "$COMMIT_JSON" | jq -e 'has("sha")' > /dev/null; then
+            echo "❌ Commit not found or invalid response:"
+            echo "$COMMIT_JSON"
+            exit 1
+          fi
+          LATEST_SHA_LOCAL=$(echo "$COMMIT_JSON" | jq -r '.sha')
+          LATEST_SHA_SHORT=$(echo "$LATEST_SHA_LOCAL" | cut -c1-7)
+          LATEST_MSG=$(echo "$COMMIT_JSON" | jq -r '.commit.message')
+          echo "Commit SHA: $LATEST_SHA_SHORT"
+          echo "Commit message: $LATEST_MSG"
+          # Export as env vars
+          echo "LATEST_SHA=$LATEST_SHA_LOCAL" >> $GITHUB_ENV
+          echo "LATEST_SHA_SHORT=$LATEST_SHA_SHORT" >> $GITHUB_ENV
+          echo "LATEST_MSG<<EOF" >> $GITHUB_ENV
+          echo "$LATEST_MSG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          # Export as outputs
+          echo "latest_sha=$LATEST_SHA_LOCAL" >> $GITHUB_OUTPUT
+          echo "latest_msg<<EOF" >> $GITHUB_OUTPUT
+          echo "$LATEST_MSG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          # Save SHA to a file
+          echo "$LATEST_SHA_LOCAL" > latest-swift-book-sha-latest.txt
+          # Fetch tags that point to this commit
+          TAG_JSON=$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
+            "https://api.github.com/repos/swiftlang/swift-book/tags")
+          TAG_NAME=$(echo "$TAG_JSON" | jq -r --arg sha "$LATEST_SHA_LOCAL" '.[] | select(.commit.sha==$sha) | .name')
+          echo "Tag name: $TAG_NAME"
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+
+      - name: Download SF Pro Fonts DMG
+        if: steps.check_sha.outputs.skip != 'true'
+        run: curl -L -o SF-Pro.dmg https://developer.apple.com/download/files/SF-Pro.dmg
+
+      - name: Mount DMG and install SF Pro fonts
+        if: steps.check_sha.outputs.skip != 'true'
+        run: |
+          # Mount the DMG
+          hdiutil attach SF-Pro.dmg -mountpoint /Volumes/SFPro
+
+          # Install the SF Pro Fonts package system-wide
+          sudo installer -pkg "/Volumes/SFPro/SF Pro Fonts.pkg" -target /
+
+          # Detach DMG
+          hdiutil detach /Volumes/SFPro
+
+      - name: Set up Python
+        if: steps.check_sha.outputs.skip != 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install Python dependencies
+        if: steps.check_sha.outputs.skip != 'true'
+        run: |
+          python -m pip install swift-book-pdf
+
+      - name: Install TeX Live (cached)
+        if: steps.check_sha.outputs.skip != 'true'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/texlive
+            ~/.texlive2025
+          key: texlive-2025-${{ runner.os }}-${{ hashFiles('.github/workflows/generate-swift-book-pdfs.yml') }}
+          restore-keys: |
+            texlive-2025-${{ runner.os }}-
+
+      - name: Install TeX Live and required packages
+        if: steps.check_sha.outputs.skip != 'true'
+        run: |
+          set -e
+          YEAR=2025
+          TEXDIR="$HOME/texlive/${YEAR}"
+          export PATH="$TEXDIR/bin/universal-darwin:$PATH"
+          if ! command -v tlmgr >/dev/null 2>&1; then
+            curl -L -o install-tl-unx.tar.gz http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+            tar -xzf install-tl-unx.tar.gz
+            INSTALL_DIR=$(find . -maxdepth 1 -type d -name 'install-tl-*' | head -n 1)
+            cd "$INSTALL_DIR"
+            printf '%s\n' \
+              'selected_scheme scheme-small' \
+              "TEXDIR $TEXDIR" \
+              "TEXMFCONFIG $HOME/.texlive2025/texmf-config" \
+              "TEXMFHOME $HOME/texmf" \
+              "TEXMFLOCAL $HOME/texlive/texmf-local" \
+              "TEXMFSYSCONFIG $TEXDIR/texmf-config" \
+              "TEXMFSYSVAR $TEXDIR/texmf-var" \
+              "TEXMFVAR $HOME/.texlive2025/texmf-var" \
+              'option_doc 0' \
+              'option_src 0' \
+              > texlive.profile
+            ./install-tl -profile texlive.profile
+            cd ..
+          fi
+          tlmgr update --self || true
+          REQUIRED_PKGS="fontspec xcolor graphics fancyhdr geometry adjustbox ifoddpage enumitem listings minted tcolorbox pgf needspace hyperref parskip tabulary ragged2e footmisc lua-ul pdfcol tikzfill bigfoot"
+          tlmgr install $REQUIRED_PKGS || true
+          tlmgr path add
+          echo "$TEXDIR/bin/universal-darwin" >> $GITHUB_PATH
+
+      - name: Generate PDFs
+        if: steps.check_sha.outputs.skip != 'true'
+        run: |
+          mkdir -p swift-book
+
+          # Helper function to run commands quietly unless debug is enabled
+          run_quiet() {
+            if [ "$ACTIONS_STEP_DEBUG" = "true" ]; then
+              "$@"
+            else
+              "$@" > /dev/null 2>&1
+            fi
+          }
+
+          # Generate digital light mode PDF
+          echo "Generating digital light mode PDF..."
+          run_quiet swift_book_pdf -i ./swift-book-repo swift-book/latest/swift_book_digital.pdf
+
+          # Generate digital dark mode PDF
+          echo "Generating digital dark mode PDF..."
+          run_quiet swift_book_pdf -i ./swift-book-repo --dark swift-book/latest/swift_book_digital_dark.pdf
+
+          # Generate print light mode PDF
+          echo "Generating print light mode PDF..."
+          run_quiet swift_book_pdf -i ./swift-book-repo --mode print swift-book/latest/swift_book_print.pdf
+
+          # Generate print dark mode PDF
+          echo "Generating print dark mode PDF..."
+          run_quiet swift_book_pdf -i ./swift-book-repo --mode print --dark swift-book/latest/swift_book_print_dark.pdf
+
+          # If this commit has a tag, also copy PDFs into that tag folder
+          if [ -n "${{ steps.swiftbook_sha.outputs.tag_name }}" ]; then
+            TAG_DIR="swift-book/${{ steps.swiftbook_sha.outputs.tag_name }}"
+            mkdir -p "$TAG_DIR"
+            cp swift-book/latest/*.pdf "$TAG_DIR"/
+            echo "Also copied PDFs to $TAG_DIR"
+          fi
+
+          echo "All PDFs generated successfully!"
+
+      - name: Commit and push PDFs to repository
+        if: steps.check_sha.outputs.skip != 'true'
+        run: |
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Move latest SHA file
+          mv latest-swift-book-sha-latest.txt .github/sha
+
+          # Add PDFs (won’t fail if none exist)
+          git add swift-book/latest/*.pdf || true
+          if [ -n "${{ steps.swiftbook_sha.outputs.tag_name }}" ]; then
+            git add swift-book/${{ steps.swiftbook_sha.outputs.tag_name }}/*.pdf || true
+          fi
+          git add .github/sha
+
+          # Check if there’s anything staged
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            # Use the latest commit message and short SHA from swift-book
+            # Append a direct link to the upstream commit for convenience
+            COMMIT_MSG=$(printf "Swift Book upstream: %s\n%s\n\nUpstream commit: https://github.com/swiftlang/swift-book/commit/%s" "$LATEST_SHA_SHORT" "$LATEST_MSG" "$LATEST_SHA")
+            git commit -m "$COMMIT_MSG"
+            # Use GitHub token for push
+            git push origin HEAD:${GITHUB_REF#refs/heads/}
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag commit if upstream is tagged
+        if: steps.check_sha.outputs.skip != 'true' && steps.swiftbook_sha.outputs.TAG_NAME != ''
+        run: |
+          git tag "${{ steps.swiftbook_sha.outputs.TAG_NAME }}"
+          git push origin "${{ steps.swiftbook_sha.outputs.TAG_NAME }}"
+
+      - name: Create release and upload PDFs if upstream is tagged
+        if: steps.check_sha.outputs.skip != 'true' && steps.swiftbook_sha.outputs.TAG_NAME != ''
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.swiftbook_sha.outputs.TAG_NAME }}
+          name: ${{ steps.swiftbook_sha.outputs.TAG_NAME }}
+          body: |
+            Release for Swift Book upstream tag ${{ steps.swiftbook_sha.outputs.TAG_NAME }}
+
+            https://github.com/swiftlang/swift-book/releases/tag/${{ steps.swiftbook_sha.outputs.TAG_NAME }}
+          files: |
+            swift-book/${{ steps.swiftbook_sha.outputs.TAG_NAME }}/swift_book_digital.pdf
+            swift-book/${{ steps.swiftbook_sha.outputs.TAG_NAME }}/swift_book_digital_dark.pdf
+            swift-book/${{ steps.swiftbook_sha.outputs.TAG_NAME }}/swift_book_print.pdf
+            swift-book/${{ steps.swiftbook_sha.outputs.TAG_NAME }}/swift_book_print_dark.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
