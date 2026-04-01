@@ -220,7 +220,7 @@ def generate_readme_table(versions: list[dict], upstream_repo_dir: Path | None, 
         digital_files = [name for name in latest_files if name.startswith("swift_book_digital")]
         print_files = [name for name in latest_files if name.startswith("swift_book_print")]
         lines.append(
-            "| **Latest** | "
+            "| Latest | "
             "Rolling | "
             f"{format_release_date(latest_release_date(upstream_repo_dir, allow_local_fallback))} | "
             "[Open ↗](swift-book/latest) | "
@@ -236,7 +236,7 @@ def generate_readme_table(versions: list[dict], upstream_repo_dir: Path | None, 
             digital_files = [name for name in release["files"] if name.startswith("swift_book_digital")]
             print_files = [name for name in release["files"] if name.startswith("swift_book_print")]
             folder_link = f"[Open ↗]({base_path})"
-            version_cell = f"**{entry['version']}**" if index == 0 else "&nbsp;&nbsp;↳"
+            version_cell = entry["version"] if index == 0 else "&nbsp;&nbsp;↳"
             lines.append(
                 f"| {version_cell} | {label} | {format_release_date(release_date(entry['version'], release['type'], release['tag'], upstream_repo_dir, allow_local_fallback))} | {folder_link} | "
                 f"{render_file_links(base_path, digital_files)} | "
