@@ -16,6 +16,7 @@
 """Update the README version index from the swift-book directory tree."""
 
 import argparse
+from datetime import datetime
 import re
 import subprocess
 import tempfile
@@ -47,6 +48,13 @@ LINK_LABELS = {
 def version_sort_key(version: str) -> tuple:
     """Return a tuple of ints for natural version sorting."""
     return tuple(int(x) for x in version.split("."))
+
+
+def format_release_date(date_str: str) -> str:
+    """Format an ISO date like 2026-02-12 as Feb 12, 2026."""
+    if not date_str:
+        return "-"
+    return datetime.strptime(date_str, "%Y-%m-%d").strftime("%b %-d, %Y")
 
 
 def release_sort_key(release_type: str) -> tuple:
@@ -204,20 +212,20 @@ def generate_readme_table(versions: list[dict], upstream_repo_dir: Path | None, 
         return " / ".join(links) if links else "-"
 
     lines = [
-        "| Version | Release Date | Channel | Digital | Print | Folder |",
-        "|---------|--------------|---------|---------|-------|--------|",
+        "| Version | Release | Release Date | Folder | Digital | Print |",
+        "|--------:|---------|--------------|--------|---------|-------|",
     ]
 
     if latest_files:
         digital_files = [name for name in latest_files if name.startswith("swift_book_digital")]
         print_files = [name for name in latest_files if name.startswith("swift_book_print")]
         lines.append(
-            "| Latest | "
-            f"{latest_release_date(upstream_repo_dir, allow_local_fallback) or '-'} | "
+            "| **Latest** | "
             "Rolling | "
+            f"{format_release_date(latest_release_date(upstream_repo_dir, allow_local_fallback))} | "
+            "[↗](swift-book/latest) | "
             f"{render_file_links('swift-book/latest', digital_files)} | "
-            f"{render_file_links('swift-book/latest', print_files)} | "
-            "[`latest/`](swift-book/latest) |"
+            f"{render_file_links('swift-book/latest', print_files)} |"
         )
 
     for entry in reversed(versions):
@@ -227,13 +235,12 @@ def generate_readme_table(versions: list[dict], upstream_repo_dir: Path | None, 
             base_path = f"swift-book/{entry['version']}/{release['type']}"
             digital_files = [name for name in release["files"] if name.startswith("swift_book_digital")]
             print_files = [name for name in release["files"] if name.startswith("swift_book_print")]
-            folder_link = f"[`{release['tag']}`]({base_path})"
-            version_cell = entry["version"] if index == 0 else "↳"
+            folder_link = f"[↗]({base_path})"
+            version_cell = f"**{entry['version']}**" if index == 0 else "↳"
             lines.append(
-                f"| {version_cell} | {release_date(entry['version'], release['type'], release['tag'], upstream_repo_dir, allow_local_fallback) or '-'} | {label} | "
+                f"| {version_cell} | {label} | {format_release_date(release_date(entry['version'], release['type'], release['tag'], upstream_repo_dir, allow_local_fallback))} | {folder_link} | "
                 f"{render_file_links(base_path, digital_files)} | "
-                f"{render_file_links(base_path, print_files)} | "
-                f"{folder_link} |"
+                f"{render_file_links(base_path, print_files)} |"
             )
     return "\n".join(lines)
 
