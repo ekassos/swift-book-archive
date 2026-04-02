@@ -209,11 +209,11 @@ def generate_readme_table(versions: list[dict], upstream_repo_dir: Path | None, 
         links = []
         for filename in filenames:
             links.append(f"[{LINK_LABELS[filename]}]({base_path}/{filename})")
-        return " / ".join(links) if links else "-"
+        return " · ".join(links) if links else "-"
 
     lines = [
-        "| Version | Release | Release Date | Folder | Digital | Print |",
-        "|---------|---------|--------------|--------|---------|-------|",
+        "| Version | Release Date | Folder | Digital | Print |",
+        "|---------|--------------|--------|---------|-------|",
     ]
 
     if latest_files:
@@ -221,7 +221,6 @@ def generate_readme_table(versions: list[dict], upstream_repo_dir: Path | None, 
         print_files = [name for name in latest_files if name.startswith("swift_book_print")]
         lines.append(
             "| Latest | "
-            "Rolling | "
             f"{format_release_date(latest_release_date(upstream_repo_dir, allow_local_fallback))} | "
             "[Open ↗](swift-book/latest) | "
             f"{render_file_links('swift-book/latest', digital_files)} | "
@@ -236,9 +235,14 @@ def generate_readme_table(versions: list[dict], upstream_repo_dir: Path | None, 
             digital_files = [name for name in release["files"] if name.startswith("swift_book_digital")]
             print_files = [name for name in release["files"] if name.startswith("swift_book_print")]
             folder_link = f"[Open ↗]({base_path})"
-            version_cell = entry["version"] if index == 0 else "&nbsp;&nbsp;↳"
+            if index == 0 and label == "Stable":
+                version_cell = entry["version"]
+            elif index == 0:
+                version_cell = f"{entry['version']} ({label})"
+            else:
+                version_cell = f"└─ {label}"
             lines.append(
-                f"| {version_cell} | {label} | {format_release_date(release_date(entry['version'], release['type'], release['tag'], upstream_repo_dir, allow_local_fallback))} | {folder_link} | "
+                f"| {version_cell} | {format_release_date(release_date(entry['version'], release['type'], release['tag'], upstream_repo_dir, allow_local_fallback))} | {folder_link} | "
                 f"{render_file_links(base_path, digital_files)} | "
                 f"{render_file_links(base_path, print_files)} |"
             )
