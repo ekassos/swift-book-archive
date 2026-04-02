@@ -57,11 +57,6 @@ def format_release_date(date_str: str) -> str:
     return datetime.strptime(date_str, "%Y-%m-%d").strftime("%b %-d, %Y")
 
 
-def nowrap(text: str) -> str:
-    """Wrap text in a span that asks renderers not to wrap it."""
-    return f'<span style="white-space: nowrap;">{text}</span>'
-
-
 def release_sort_key(release_type: str) -> tuple:
     """Sort betas before fcs, betas numerically."""
     if release_type == "fcs":
@@ -225,7 +220,7 @@ def generate_readme_table(versions: list[dict], upstream_repo_dir: Path | None, 
         digital_files = [name for name in latest_files if name.startswith("swift_book_digital")]
         print_files = [name for name in latest_files if name.startswith("swift_book_print")]
         lines.append(
-            f"| {nowrap('Latest')} | "
+            "| Latest | "
             f"{format_release_date(latest_release_date(upstream_repo_dir, allow_local_fallback))} | "
             "[Open ↗](swift-book/latest) | "
             f"{render_file_links('swift-book/latest', digital_files)} | "
@@ -247,7 +242,7 @@ def generate_readme_table(versions: list[dict], upstream_repo_dir: Path | None, 
             else:
                 version_cell = f"└─ {label}"
             lines.append(
-                f"| {nowrap(version_cell)} | {format_release_date(release_date(entry['version'], release['type'], release['tag'], upstream_repo_dir, allow_local_fallback))} | {folder_link} | "
+                f"| {version_cell} | {format_release_date(release_date(entry['version'], release['type'], release['tag'], upstream_repo_dir, allow_local_fallback))} | {folder_link} | "
                 f"{render_file_links(base_path, digital_files)} | "
                 f"{render_file_links(base_path, print_files)} |"
             )
