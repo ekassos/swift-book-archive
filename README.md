@@ -1,6 +1,17 @@
-# Swift Book PDF Archive
+# Swift Book Archive
 
-Download PDF versions of the _The Swift Programming Language_ book. 
+Download current and previous PDF editions of the _The Swift Programming Language_ book. 
+
+<picture>
+  <!-- User prefers light mode: -->
+  <source srcset="https://github.com/user-attachments/assets/f7dd8553-afda-4584-bd99-eaedbd0eb931" media="(prefers-color-scheme: light)"/>
+
+  <!-- User prefers dark mode: -->
+  <source srcset="https://github.com/user-attachments/assets/710e89b4-2c74-4156-957a-f054cff0098a" media="(prefers-color-scheme: dark)" alt="The image shows The Swift Programming Language book displayed across three devices: a 14-inch MacBook Pro (M4) in Silver, an 11-inch iPad Pro (M4) in Space Gray, and an iPhone 17 Pro in Deep Blue. Each screen shows pages from the book titled Collection Types, featuring diagrams, code snippets, and explanations about arrays, sets, and dictionaries in Swift. Below the devices, centered text reads 'Swift Book Archive' followed by a large bold headline, 'Learn Swift anywhere.' The background is black, emphasizing the devices and text."/>
+
+  <!-- User has no color preference: -->
+  <img width="100%" alt="The image shows The Swift Programming Language book displayed across three devices: a 14-inch MacBook Pro (M4) in Silver, an 11-inch iPad Pro (M4) in Space Gray, and an iPhone 17 Pro in Deep Blue. Each screen shows pages from the book titled Collection Types, featuring diagrams, code snippets, and explanations about arrays, sets, and dictionaries in Swift. Below the devices, centered text reads 'Swift Book Archive' followed by a large bold headline, 'Learn Swift anywhere.' The background is clean and light gray, emphasizing the devices and text." src="https://github.com/user-attachments/assets/f7dd8553-afda-4584-bd99-eaedbd0eb931" />
+</picture>
 
 ## Available Versions
 
