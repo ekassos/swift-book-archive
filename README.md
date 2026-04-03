@@ -17,6 +17,61 @@ Download current and previous PDF editions of the _The Swift Programming Languag
 
 The PDF book is available in four versatile editions to suit any setup. 
 
+<table>
+  <tr>
+    <td valign="middle" align="center" width="50%">
+    <picture>
+  <!-- User prefers light mode: -->
+  <source srcset="https://github.com/user-attachments/assets/15cabcac-8b95-4505-822d-d23d6fc06120" media="(prefers-color-scheme: light)"/>
+
+  <!-- User prefers dark mode: -->
+  <source srcset="https://github.com/user-attachments/assets/dd79b12e-bfd5-4b93-a8e9-a8bbadefd07e" media="(prefers-color-scheme: dark)"/>
+
+  <!-- User has no color preference: -->
+  <img src="https://github.com/user-attachments/assets/15cabcac-8b95-4505-822d-d23d6fc06120"/>
+</picture>
+    </td>
+    <td valign="middle" align="center" width="50%">
+    <picture>
+  <!-- User prefers light mode: -->
+  <source srcset="https://github.com/user-attachments/assets/5f0cd825-89e8-4ed0-987a-a505615b9e7c" media="(prefers-color-scheme: light)"/>
+
+  <!-- User prefers dark mode: -->
+  <source srcset="https://github.com/user-attachments/assets/a5958acd-3a26-401c-9232-a1a148d869ac" media="(prefers-color-scheme: dark)"/>
+
+  <!-- User has no color preference: -->
+  <img src="https://github.com/user-attachments/assets/5f0cd825-89e8-4ed0-987a-a505615b9e7c"/>
+</picture>
+    </td>
+    </tr>
+      <tr>
+    <td valign="middle" align="center" width="50%">
+    <picture>
+  <!-- User prefers light mode: -->
+  <source srcset="https://github.com/user-attachments/assets/a693d399-51b9-4c29-b5a3-e85af4f47264" media="(prefers-color-scheme: light)"/>
+
+  <!-- User prefers dark mode: -->
+  <source srcset="https://github.com/user-attachments/assets/a545ca62-53f0-44f7-82f1-44711295c61d" media="(prefers-color-scheme: dark)"/>
+
+  <!-- User has no color preference: -->
+  <img src="https://github.com/user-attachments/assets/a693d399-51b9-4c29-b5a3-e85af4f47264"/>
+</picture>
+    </td>
+            <td valign="middle" align="center" width="50%">
+    <picture>
+  <!-- User prefers light mode: -->
+  <source srcset="https://github.com/user-attachments/assets/7aae5693-4f7c-4729-9bc7-c95cb6ba8981" media="(prefers-color-scheme: light)"/>
+
+  <!-- User prefers dark mode: -->
+  <source srcset="https://github.com/user-attachments/assets/735579ac-3e2a-4284-b35f-1ac89d10638b" media="(prefers-color-scheme: dark)"/>
+
+  <!-- User has no color preference: -->
+  <img src="https://github.com/user-attachments/assets/7aae5693-4f7c-4729-9bc7-c95cb6ba8981"/>
+</picture>
+    </td>
+    </tr>
+</table>
+
 ## Version. Choose a corresponding Swift version.
 
 The latest numbered release is the best choice for most readers. `Latest` is a continuously updated preview of _The Swift Programming Language_ and may include changes that haven’t been included in an official release yet. If you're working with a specific Swift version, choose the matching numbered release for the most relevant documentation.
@@ -25,6 +80,9 @@ The latest numbered release is the best choice for most readers. `Latest` is a c
 | Version | Release Date | Folder | Digital | Print |
 |---------|--------------|--------|---------|-------|
 | Latest | Mar 24, 2026 | [Open ↗](swift-book/latest) | [Light](swift-book/latest/swift_book_digital.pdf) · [Dark](swift-book/latest/swift_book_digital_dark.pdf) | [Light](swift-book/latest/swift_book_print.pdf) · [Dark](swift-book/latest/swift_book_print_dark.pdf) |
+
+| Version | Release Date | Folder | Digital | Print |
+|---------|--------------|--------|---------|-------|
 | 6.3 (Beta 3) | Mar 11, 2026 | [Open ↗](swift-book/6.3/beta-3) | [Light](swift-book/6.3/beta-3/swift_book_digital.pdf) · [Dark](swift-book/6.3/beta-3/swift_book_digital_dark.pdf) | [Light](swift-book/6.3/beta-3/swift_book_print.pdf) · [Dark](swift-book/6.3/beta-3/swift_book_print_dark.pdf) |
 | 6.2.3 | Dec 15, 2025 | [Open ↗](swift-book/6.2.3/fcs) | [Light](swift-book/6.2.3/fcs/swift_book_digital.pdf) · [Dark](swift-book/6.2.3/fcs/swift_book_digital_dark.pdf) | [Light](swift-book/6.2.3/fcs/swift_book_print.pdf) · [Dark](swift-book/6.2.3/fcs/swift_book_print_dark.pdf) |
 | 6.2.1 | Nov 3, 2025 | [Open ↗](swift-book/6.2.1/fcs) | [Light](swift-book/6.2.1/fcs/swift_book_digital.pdf) · [Dark](swift-book/6.2.1/fcs/swift_book_digital_dark.pdf) | [Light](swift-book/6.2.1/fcs/swift_book_print.pdf) · [Dark](swift-book/6.2.1/fcs/swift_book_print_dark.pdf) |
