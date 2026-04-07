@@ -2,7 +2,7 @@ Portions of this repository may utilize the following copyrighted material,
 the use of which is hereby acknowledged.
 
 swift-book
-Copyright (c) 2014-2024 Apple Inc. and the Swift project authors
+Copyright (c) 2014-2026 Apple Inc. and the Swift project authors
 
                                  Apache License
                            Version 2.0, January 2004
