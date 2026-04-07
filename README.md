@@ -113,10 +113,12 @@ If you're working with a specific Swift version, choose the matching numbered re
 
 ## Acknowledgments
 
-This project uses the swift-book-pdf [repository](https://github.com/ekassos/swift-book-pdf) to generate PDF versions of _The Swift Programming Language_ book. The swift-book-pdf repository is licensed under the Apache License v2.0.
+Swift Book Archive uses [swift-book-pdf](https://github.com/ekassos/swift-book-pdf) to generate PDF versions of _The Swift Programming Language_ book. The swift-book-pdf repository is licensed under the Apache License, Version 2.0.
 
-At runtime, the swift-book [repository](https://github.com/swiftlang/swift-book) is temporarily cloned for processing, but no part of the repository is directly redistributed here.
+This repository is licensed under the Apache License, Version 2.0.
 
-The swift-book repository is part of the Swift.org open source project, which is licensed under the Apache License v2.0 with Runtime Library Exception. See https://swift.org/LICENSE.txt for more details. The Swift project authors are credited at https://swift.org/CONTRIBUTORS.txt.
+PDF editions are derived from the swift-book [source](https://github.com/swiftlang/swift-book) and are modified versions of the original work, converted from DocC to PDF, and formatted for distribution.
 
-The Swift logo is a trademark of Apple Inc.
+The swift-book repository is part of the Swift.org open source project. The swift-book source is licensed under the Apache License, Version 2.0 with Runtime Library Exception. See https://swift.org/LICENSE.txt for details; a copy is included in [licenses/swift-book-LICENSE.txt](licenses/swift-book-LICENSE.txt). The original work is Copyright © 2014–2026 Apple Inc. and the Swift project authors. The Swift project authors are credited at https://swift.org/CONTRIBUTORS.txt.
+
+The Swift logo is a trademark of Apple Inc. These editions are not published by, endorsed by, or affiliated with Apple Inc. or the Swift.org open source project.
