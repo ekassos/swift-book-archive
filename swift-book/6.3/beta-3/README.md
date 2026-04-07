@@ -15,5 +15,5 @@ This is the latest numbered release, and the best choice for most readers. It mi
 
 ## More
 
-- [Back to this version](..)
+- [Back to all Swift 6.3 versions](..)
 - [Back to all versions](../..)

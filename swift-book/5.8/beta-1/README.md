@@ -13,5 +13,5 @@ Release date: Feb 17, 2023
 
 ## More
 
-- [Back to this version](..)
+- [Back to all Swift 5.8 versions](..)
 - [Back to all versions](../..)

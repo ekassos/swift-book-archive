@@ -211,7 +211,7 @@ def generate_release_readme(manifest: dict, version: str, release_type: str, is_
             "",
             "## More",
             "",
-            "- [Back to this version](..)",
+            f"- [Back to all Swift {version} versions](..)",
             "- [Back to all versions](../..)",
         ]
     )

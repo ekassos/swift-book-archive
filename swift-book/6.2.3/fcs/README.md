@@ -13,5 +13,5 @@ Release date: Dec 15, 2025
 
 ## More
 
-- [Back to this version](..)
+- [Back to all Swift 6.2.3 versions](..)
 - [Back to all versions](../..)

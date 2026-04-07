@@ -13,5 +13,5 @@ Release date: Mar 5, 2024
 
 ## More
 
-- [Back to this version](..)
+- [Back to all Swift 5.10 versions](..)
 - [Back to all versions](../..)
