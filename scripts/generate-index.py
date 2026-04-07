@@ -231,18 +231,29 @@ def generate_versions_intro(recommended_label: str) -> str:
     """Generate helper text for choosing a version."""
     if recommended_label:
         return (
-            f"Start with `{recommended_label} ★` if you want the same version of _The Swift Programming Language_ "
-            "that's currently available at [docs.swift.org](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/). "
-            "`Latest` is a continuously updated preview of _The Swift Programming Language_ and may include "
-            "changes before an official release. Beta versions preview upcoming updates. "
-            "If you're working with a specific Swift version, choose the matching numbered release."
+            f"The latest numbered release, **{recommended_label}**, is the best choice for most readers, "
+            "and mirrors the version of _The Swift Programming Language_ that's currently available at "
+            "[docs.swift.org](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/). "
         )
 
     return (
-        "`Latest` is a continuously updated preview of _The Swift Programming Language_. "
-        "Beta versions preview upcoming updates. Choose the version that best matches the Swift release "
-        "you're using."
+        "The latest numbered release is the best choice for most readers and mirrors the version of "
+        "_The Swift Programming Language_ that's currently available at "
+        "[docs.swift.org](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/)."
     )
+
+
+def generate_latest_intro() -> str:
+    """Generate helper text for the Latest preview row."""
+    return (
+        "**Latest** is a continuously updated preview of _The Swift Programming Language_ and may include "
+        "changes before an official release."
+    )
+
+
+def generate_previous_versions_intro() -> str:
+    """Generate helper text for the previous versions table."""
+    return "If you're working with a specific Swift version, choose the matching numbered release."
 
 
 def generate_readme_table(
@@ -250,6 +261,10 @@ def generate_readme_table(
     upstream_repo_dir: Path | None,
     allow_local_fallback: bool,
     recommended: tuple[str, str],
+    include_latest: bool = True,
+    exclude_recommended: bool = False,
+    only_recommended: bool = False,
+    bold_recommended: bool = False,
 ) -> str:
     """Generate a Markdown table of available versions."""
     latest_files = [f.name for f in sorted((BOOK_DIR / "latest").iterdir()) if f.is_file() and f.name in PDF_FILES]
@@ -265,32 +280,43 @@ def generate_readme_table(
         "|---------|--------------|--------|---------|-------|",
     ]
 
-    if latest_files:
+    if include_latest and latest_files:
         digital_files = [name for name in latest_files if name.startswith("swift_book_digital")]
         print_files = [name for name in latest_files if name.startswith("swift_book_print")]
-        lines.append(
+        latest_row = (
             "| Latest | "
             f"{format_release_date(latest_release_date(upstream_repo_dir, allow_local_fallback))} | "
             "[Open ↗](swift-book/latest) | "
             f"{render_file_links('swift-book/latest', digital_files)} | "
             f"{render_file_links('swift-book/latest', print_files)} |"
         )
+    else:
+        latest_row = None
 
     for entry in reversed(versions):
         ordered_releases = list(reversed(entry["releases"]))
         for index, release in enumerate(ordered_releases):
+            is_recommended = (entry["version"], release["type"]) == recommended
+            if only_recommended and not is_recommended:
+                continue
+            if exclude_recommended and (entry["version"], release["type"]) == recommended:
+                continue
             base_path = f"swift-book/{entry['version']}/{release['type']}"
             digital_files = [name for name in release["files"] if name.startswith("swift_book_digital")]
             print_files = [name for name in release["files"] if name.startswith("swift_book_print")]
             folder_link = f"[Open ↗]({base_path})"
             version_cell = version_cell_text(entry["version"], release["type"], index)
-            if (entry["version"], release["type"]) == recommended:
+            if is_recommended:
                 version_cell = f"{version_cell} ★"
+                if bold_recommended:
+                    version_cell = f"**{version_cell}**"
             lines.append(
                 f"| {version_cell} | {format_release_date(release_date(entry['version'], release['type'], release['tag'], upstream_repo_dir, allow_local_fallback))} | {folder_link} | "
                 f"{render_file_links(base_path, digital_files)} | "
                 f"{render_file_links(base_path, print_files)} |"
             )
+    if latest_row is not None:
+        lines.append(latest_row)
     return "\n".join(lines)
 
 
@@ -299,13 +325,34 @@ def update_readme(versions: list[dict], upstream_repo_dir: Path | None, allow_lo
     readme = README_PATH.read_text()
     recommended_version_name, recommended_release_type, recommended_label = recommended_release(versions)
     intro = generate_versions_intro(recommended_label)
-    table = generate_readme_table(
+    primary_table = generate_readme_table(
         versions,
         upstream_repo_dir,
         allow_local_fallback,
         (recommended_version_name, recommended_release_type),
+        include_latest=True,
+        exclude_recommended=False,
+        only_recommended=True,
+        bold_recommended=True,
     )
-    block = f"{README_START}\n{intro}\n\n{table}\n{README_END}"
+    previous_versions_table = generate_readme_table(
+        versions,
+        upstream_repo_dir,
+        allow_local_fallback,
+        (recommended_version_name, recommended_release_type),
+        include_latest=False,
+        exclude_recommended=True,
+    )
+    block = (
+        f"{README_START}\n"
+        f"{intro}\n\n"
+        f"{generate_latest_intro()}\n\n"
+        f"{primary_table}\n\n"
+        "### Previous Versions\n\n"
+        f"{generate_previous_versions_intro()}\n\n"
+        f"{previous_versions_table}\n"
+        f"{README_END}"
+    )
 
     if README_START in readme and README_END in readme:
         readme = re.sub(
