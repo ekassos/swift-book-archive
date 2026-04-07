@@ -115,8 +115,6 @@ If you're working with a specific Swift version, choose the matching numbered re
 
 Swift Book Archive uses [swift-book-pdf](https://github.com/ekassos/swift-book-pdf) to generate PDF versions of _The Swift Programming Language_ book. The swift-book-pdf repository is licensed under the Apache License, Version 2.0.
 
-This repository is licensed under the Apache License, Version 2.0.
-
 PDF editions are derived from the swift-book [source](https://github.com/swiftlang/swift-book) and are modified versions of the original work, converted from DocC to PDF, and formatted for distribution.
 
 The swift-book repository is part of the Swift.org open source project. The swift-book source is licensed under the Apache License, Version 2.0 with Runtime Library Exception. See https://swift.org/LICENSE.txt for details; a copy is included in [licenses/swift-book-LICENSE.txt](licenses/swift-book-LICENSE.txt). The original work is Copyright © 2014–2026 Apple Inc. and the Swift project authors. The Swift project authors are credited at https://swift.org/CONTRIBUTORS.txt.
