@@ -17,6 +17,7 @@
 
 import json
 import re
+from datetime import datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -56,12 +57,20 @@ def load_manifest() -> dict:
     return json.loads(DATA_PATH.read_text())
 
 
+def format_date(iso_date: str) -> str:
+    """Convert 'YYYY-MM-DD' to 'Mon DD, YYYY' (e.g. 'Mar 11, 2026')."""
+    dt = datetime.strptime(iso_date, "%Y-%m-%d")
+    return dt.strftime("%b %-d, %Y")
+
+
 def release_date(manifest: dict, version: str, release_type: str) -> str:
-    return manifest.get("releases", {}).get(f"{version}/{release_type}", {}).get("date", "")
+    raw = manifest.get("releases", {}).get(f"{version}/{release_type}", {}).get("date", "")
+    return format_date(raw) if raw else ""
 
 
 def latest_date(manifest: dict) -> str:
-    return manifest.get("latest", {}).get("date", "")
+    raw = manifest.get("latest", {}).get("date", "")
+    return format_date(raw) if raw else ""
 
 
 def latest_sha(manifest: dict) -> str:
@@ -132,8 +141,11 @@ def generate_root_readme(manifest: dict, versions: list[tuple[str, list[str]]]) 
         "",
     ]
     if lv:
+        date = release_date(manifest, lv, lr) or "date unavailable"
         lines.extend([
             f"The latest numbered release, **{label}**, is the best choice for most readers, and mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org]({DOCS_SWIFT_ORG}).",
+            "",
+            f"- [{label}]({lv}/{lr}) ({date})",
             "",
         ])
     lines.extend([
@@ -246,7 +258,7 @@ def generate_latest_readme(manifest: dict) -> None:
             "## More",
             "",
             "- [Back to all versions](..)",
-            "- [Back to the archive](../..)",
+            "- [Back to the archive](../../)",
         ]
     )
     write_readme(latest_dir / "README.md", lines)

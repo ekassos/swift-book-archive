@@ -2,7 +2,7 @@
 
 Download PDF editions of _The Swift Programming Language_ book for Swift 5.10 Beta 3.
 
-Release date: 2024-02-13
+Release date: Feb 13, 2024
 
 ## Edition. Pick the one that works for you.
 

@@ -2,7 +2,7 @@
 
 Download PDF editions of _The Swift Programming Language_ book for Swift 6.1 Stable.
 
-Release date: 2025-03-31
+Release date: Mar 31, 2025
 
 ## Edition. Pick the one that works for you.
 

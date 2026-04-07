@@ -2,7 +2,7 @@
 
 Download PDF editions of _The Swift Programming Language_ book for Swift 6.1. Choose a release.
 
-- [Stable](fcs) (2025-03-31)
+- [Stable](fcs) (Mar 31, 2025)
 
 ## More
 

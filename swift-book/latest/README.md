@@ -2,7 +2,7 @@
 
 **Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.
 
-Latest commit date: 2026-04-03
+Latest commit date: Apr 3, 2026
 
 ## Upstream Commit
 
@@ -34,4 +34,4 @@ ultimately to support https://github.com/swiftlang/docs/issues/24
 ## More
 
 - [Back to all versions](..)
-- [Back to the archive](../..)
+- [Back to the archive](../../)
