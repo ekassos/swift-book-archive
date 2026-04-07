@@ -17,6 +17,8 @@ Download current and previous PDF editions of the _The Swift Programming Languag
 
 The PDF book is available in four editions to suit any setup. 
 
+<details>
+<summary><strong>&nbsp;Preview Editions</strong></summary>
 <table>
   <tr>
     <td valign="middle" align="center" width="50%">
@@ -71,6 +73,7 @@ The PDF book is available in four editions to suit any setup.
     </td>
     </tr>
 </table>
+</details>
 
 ## Version. Choose a corresponding Swift version.
 
