@@ -13,17 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Update the README version index from the local swift-book tree and release manifest."""
+"""Update the README version index from the local archive tree and release manifest."""
 
 from datetime import datetime
 import json
 import re
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-BOOK_DIR = REPO_ROOT / "swift-book"
+REPO_ROOT = Path(__file__).resolve().parents[3]
+BOOK_DIR = REPO_ROOT / "archive"
 README_PATH = REPO_ROOT / "README.md"
-DATA_PATH = REPO_ROOT / "data" / "releases.json"
+DATA_PATH = REPO_ROOT / ".github" / "automation" / "releases.json"
 
 PDF_FILES = [
     "swift_book_digital.pdf",
@@ -65,7 +65,7 @@ def release_sort_key(release_type: str) -> tuple:
 
 
 def scan_versions() -> list[dict]:
-    """Scan swift-book/ and return a sorted list of version entries."""
+    """Scan archive/ and return a sorted list of version entries."""
     versions: dict[str, list[dict]] = {}
 
     for version_dir in sorted(BOOK_DIR.iterdir()):
@@ -84,7 +84,7 @@ def scan_versions() -> list[dict]:
             releases.append(
                 {
                     "type": release_type,
-                    "path": f"swift-book/{version}/{release_type}",
+                    "path": f"archive/{version}/{release_type}",
                     "files": files,
                 }
             )
@@ -202,9 +202,9 @@ def generate_readme_table(
         latest_row = (
             "| Latest | "
             f"{format_release_date(latest_release_date(manifest))} | "
-            "[Open ↗](swift-book/latest) | "
-            f"{render_file_links('swift-book/latest', digital_files)} | "
-            f"{render_file_links('swift-book/latest', print_files)} |"
+            "[Open ↗](archive/latest) | "
+            f"{render_file_links('archive/latest', digital_files)} | "
+            f"{render_file_links('archive/latest', print_files)} |"
         )
     else:
         latest_row = None
@@ -217,7 +217,7 @@ def generate_readme_table(
                 continue
             if exclude_recommended and (entry["version"], release["type"]) == recommended:
                 continue
-            base_path = f"swift-book/{entry['version']}/{release['type']}"
+            base_path = f"archive/{entry['version']}/{release['type']}"
             digital_files = [name for name in release["files"] if name.startswith("swift_book_digital")]
             print_files = [name for name in release["files"] if name.startswith("swift_book_print")]
             folder_link = f"[Open ↗]({base_path})"

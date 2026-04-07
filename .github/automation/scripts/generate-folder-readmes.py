@@ -13,16 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Generate navigational README files inside swift-book folders."""
+"""Generate navigational README files inside archive folders."""
 
 import json
 import re
 from datetime import datetime
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-BOOK_DIR = REPO_ROOT / "swift-book"
-DATA_PATH = REPO_ROOT / "data" / "releases.json"
+REPO_ROOT = Path(__file__).resolve().parents[3]
+BOOK_DIR = REPO_ROOT / "archive"
+DATA_PATH = REPO_ROOT / ".github" / "automation" / "releases.json"
 
 PDF_FILES = {
     "swift_book_digital.pdf": "Digital Light",

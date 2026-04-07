@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Update data/releases.json from the upstream swift-book repository."""
+"""Update .github/automation/releases.json from the upstream swift-book repository."""
 
 import argparse
 import json
@@ -23,9 +23,9 @@ import tempfile
 from collections import OrderedDict
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-DATA_PATH = REPO_ROOT / "data" / "releases.json"
-BOOK_DIR = REPO_ROOT / "swift-book"
+REPO_ROOT = Path(__file__).resolve().parents[3]
+DATA_PATH = REPO_ROOT / ".github" / "automation" / "releases.json"
+BOOK_DIR = REPO_ROOT / "archive"
 DEFAULT_UPSTREAM_REPO = REPO_ROOT / "swift-book-repo"
 UPSTREAM_REPO_URL = "https://github.com/swiftlang/swift-book.git"
 TAG_PATTERN = re.compile(r"^swift-(?P<version>\d+(?:\.\d+){0,2})-(?P<release>fcs|beta-\d+)$")
@@ -233,7 +233,7 @@ def main() -> None:
             tempdir.cleanup()
 
     latest_sha = manifest.get("latest", {}).get("sha", "")[:7]
-    print(f"Updated data/releases.json with latest {latest_sha} and {updated_tags} tagged releases")
+    print(f"Updated .github/automation/releases.json with latest {latest_sha} and {updated_tags} tagged releases")
 
 
 if __name__ == "__main__":
