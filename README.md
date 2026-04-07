@@ -15,7 +15,7 @@ Download current and previous PDF editions of the _The Swift Programming Languag
 
 ## Edition. Pick the one that works for you.
 
-The PDF book is available in four versatile editions to suit any setup. 
+The PDF book is available in four editions to suit any setup. 
 
 <table>
   <tr>
@@ -74,16 +74,22 @@ The PDF book is available in four versatile editions to suit any setup.
 
 ## Version. Choose a corresponding Swift version.
 
-The latest numbered release is the best choice for most readers. `Latest` is a continuously updated preview of _The Swift Programming Language_ and may include changes that haven’t been included in an official release yet. If you're working with a specific Swift version, choose the matching numbered release for the most relevant documentation.
-
 <!-- VERSION-INDEX:START -->
+The latest numbered release, **6.3 (Beta 3)**, is the best choice for most readers, and mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/). 
+
+**Latest** is a continuously updated preview of _The Swift Programming Language_ and may include changes before an official release.
+
 | Version | Release Date | Folder | Digital | Print |
 |---------|--------------|--------|---------|-------|
+| **6.3 (Beta 3) ★** | Mar 11, 2026 | [Open ↗](swift-book/6.3/beta-3) | [Light](swift-book/6.3/beta-3/swift_book_digital.pdf) · [Dark](swift-book/6.3/beta-3/swift_book_digital_dark.pdf) | [Light](swift-book/6.3/beta-3/swift_book_print.pdf) · [Dark](swift-book/6.3/beta-3/swift_book_print_dark.pdf) |
 | Latest | Mar 24, 2026 | [Open ↗](swift-book/latest) | [Light](swift-book/latest/swift_book_digital.pdf) · [Dark](swift-book/latest/swift_book_digital_dark.pdf) | [Light](swift-book/latest/swift_book_print.pdf) · [Dark](swift-book/latest/swift_book_print_dark.pdf) |
 
+### Previous Versions
+
+If you're working with a specific Swift version, choose the matching numbered release.
+
 | Version | Release Date | Folder | Digital | Print |
 |---------|--------------|--------|---------|-------|
-| 6.3 (Beta 3) | Mar 11, 2026 | [Open ↗](swift-book/6.3/beta-3) | [Light](swift-book/6.3/beta-3/swift_book_digital.pdf) · [Dark](swift-book/6.3/beta-3/swift_book_digital_dark.pdf) | [Light](swift-book/6.3/beta-3/swift_book_print.pdf) · [Dark](swift-book/6.3/beta-3/swift_book_print_dark.pdf) |
 | 6.2.3 | Dec 15, 2025 | [Open ↗](swift-book/6.2.3/fcs) | [Light](swift-book/6.2.3/fcs/swift_book_digital.pdf) · [Dark](swift-book/6.2.3/fcs/swift_book_digital_dark.pdf) | [Light](swift-book/6.2.3/fcs/swift_book_print.pdf) · [Dark](swift-book/6.2.3/fcs/swift_book_print_dark.pdf) |
 | 6.2.1 | Nov 3, 2025 | [Open ↗](swift-book/6.2.1/fcs) | [Light](swift-book/6.2.1/fcs/swift_book_digital.pdf) · [Dark](swift-book/6.2.1/fcs/swift_book_digital_dark.pdf) | [Light](swift-book/6.2.1/fcs/swift_book_print.pdf) · [Dark](swift-book/6.2.1/fcs/swift_book_print_dark.pdf) |
 | 6.2 | Sep 16, 2025 | [Open ↗](swift-book/6.2/fcs) | [Light](swift-book/6.2/fcs/swift_book_digital.pdf) · [Dark](swift-book/6.2/fcs/swift_book_digital_dark.pdf) | [Light](swift-book/6.2/fcs/swift_book_print.pdf) · [Dark](swift-book/6.2/fcs/swift_book_print_dark.pdf) |
@@ -111,4 +117,3 @@ At runtime, the swift-book [repository](https://github.com/swiftlang/swift-book)
 The swift-book repository is part of the Swift.org open source project, which is licensed under the Apache License v2.0 with Runtime Library Exception. See https://swift.org/LICENSE.txt for more details. The Swift project authors are credited at https://swift.org/CONTRIBUTORS.txt.
 
 The Swift logo is a trademark of Apple Inc.
-
