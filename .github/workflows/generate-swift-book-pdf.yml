@@ -34,11 +34,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Read stored swift-book commit SHA
+      - name: Read stored release metadata
         id: read_last_sha
         run: |
-          if [ -f .github/sha ]; then
-            echo "LAST_BUILT_SHA=$(cat .github/sha)" >> $GITHUB_ENV
+          if [ -f data/releases.json ]; then
+            echo "LAST_BUILT_SHA=$(jq -r '.latest.sha // empty' data/releases.json)" >> $GITHUB_ENV
           else
             echo "LAST_BUILT_SHA=" >> $GITHUB_ENV
           fi
@@ -222,8 +222,6 @@ jobs:
           echo "latest_msg<<EOF" >> $GITHUB_OUTPUT
           echo "$LATEST_MSG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-          # Save SHA to a file
-          echo "$LATEST_SHA_LOCAL" > latest-swift-book-sha-latest.txt
           # Fetch tags that point to this commit
           TAG_JSON=$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
             "https://api.github.com/repos/swiftlang/swift-book/tags")
@@ -240,6 +238,9 @@ jobs:
           fi
           echo "TAG_DIR_PATH=$TAG_DIR_PATH" >> $GITHUB_ENV
           echo "tag_dir_path=$TAG_DIR_PATH" >> $GITHUB_OUTPUT
+          LATEST_DATE=$(echo "$COMMIT_JSON" | jq -r '.commit.committer.date // .commit.author.date' | cut -dT -f1)
+          echo "LATEST_DATE=$LATEST_DATE" >> $GITHUB_ENV
+          echo "latest_date=$LATEST_DATE" >> $GITHUB_OUTPUT
 
       - name: Download SF Pro Fonts DMG
         if: steps.check_sha.outputs.skip != 'true'
@@ -352,6 +353,39 @@ jobs:
 
           echo "All PDFs generated successfully!"
 
+      - name: Update release manifest
+        if: steps.check_sha.outputs.skip != 'true'
+        run: |
+          mkdir -p data
+
+          if [ -f data/releases.json ]; then
+            cp data/releases.json /tmp/releases.json
+          else
+            printf '%s\n' '{"latest":{},"releases":{}}' > /tmp/releases.json
+          fi
+
+          jq -S \
+            --arg latest_sha "$LATEST_SHA" \
+            --arg latest_date "$LATEST_DATE" \
+            --arg tag_name "$TAG_NAME" \
+            --arg tag_dir_path "$TAG_DIR_PATH" \
+            '
+            .latest = ((.latest // {}) + {
+              sha: $latest_sha,
+              date: $latest_date
+            })
+            | .releases = (.releases // {})
+            | if $tag_dir_path != "" then
+                .releases[$tag_dir_path] = ((.releases[$tag_dir_path] // {}) + {
+                  tag: $tag_name,
+                  sha: $latest_sha,
+                  date: $latest_date
+                })
+              else
+                .
+              end
+            ' /tmp/releases.json > data/releases.json
+
       - name: Regenerate README index
         if: steps.check_sha.outputs.skip != 'true'
         run: python3 scripts/generate-index.py
@@ -363,15 +397,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Move latest SHA file
-          mv latest-swift-book-sha-latest.txt .github/sha
-
           # Add PDFs (won’t fail if none exist)
           git add swift-book/latest/*.pdf || true
           if [ -n "${{ steps.swiftbook_sha.outputs.tag_dir_path }}" ]; then
             git add "swift-book/${{ steps.swiftbook_sha.outputs.tag_dir_path }}"/*.pdf || true
           fi
-          git add .github/sha README.md
+          git add data/releases.json README.md
 
           # Check if there’s anything staged
           if git diff --staged --quiet; then

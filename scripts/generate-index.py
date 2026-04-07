@@ -17,6 +17,7 @@
 
 import argparse
 from datetime import datetime
+import json
 import re
 import subprocess
 import tempfile
@@ -25,6 +26,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 BOOK_DIR = REPO_ROOT / "swift-book"
 README_PATH = REPO_ROOT / "README.md"
+DATA_PATH = REPO_ROOT / "data" / "releases.json"
 UPSTREAM_BOOK_DIR = REPO_ROOT / "swift-book-repo"
 UPSTREAM_REPO_URL = "https://github.com/swiftlang/swift-book.git"
 
@@ -129,6 +131,15 @@ def recommended_release(versions: list[dict]) -> tuple[str, str, str]:
     return (entry["version"], release["type"], label)
 
 
+def load_release_manifest() -> dict:
+    """Load release metadata stored by the workflow."""
+    if not DATA_PATH.is_file():
+        return {}
+
+    with DATA_PATH.open() as handle:
+        return json.load(handle)
+
+
 def git_output(cwd: Path, *args: str) -> str:
     """Return stripped git command output, or an empty string if unavailable."""
     result = subprocess.run(
@@ -200,8 +211,20 @@ def upstream_tag_date(tag: str, upstream_repo_dir: Path | None) -> str:
     return tagger_date or creator_date
 
 
-def release_date(version: str, release_type: str, tag: str, upstream_repo_dir: Path | None, allow_local_fallback: bool) -> str:
+def release_date(
+    version: str,
+    release_type: str,
+    tag: str,
+    manifest: dict,
+    upstream_repo_dir: Path | None,
+    allow_local_fallback: bool,
+) -> str:
     """Resolve a release date using the upstream tag date first, then local git history."""
+    release_key = f"{version}/{release_type}"
+    manifest_date = manifest.get("releases", {}).get(release_key, {}).get("date", "")
+    if manifest_date:
+        return manifest_date
+
     output = upstream_tag_date(tag, upstream_repo_dir)
     if output:
         return output
@@ -214,8 +237,12 @@ def release_date(version: str, release_type: str, tag: str, upstream_repo_dir: P
     return history_date_for_path(grouped_path) or history_date_for_path(legacy_path)
 
 
-def latest_release_date(upstream_repo_dir: Path | None, allow_local_fallback: bool) -> str:
+def latest_release_date(manifest: dict, upstream_repo_dir: Path | None, allow_local_fallback: bool) -> str:
     """Resolve the latest row date from the upstream clone or local repo history."""
+    manifest_date = manifest.get("latest", {}).get("date", "")
+    if manifest_date:
+        return manifest_date
+
     if upstream_repo_dir is not None:
         output = git_output(upstream_repo_dir, "log", "-1", "--format=%cs", "HEAD")
         if output:
@@ -258,6 +285,7 @@ def generate_previous_versions_intro() -> str:
 
 def generate_readme_table(
     versions: list[dict],
+    manifest: dict,
     upstream_repo_dir: Path | None,
     allow_local_fallback: bool,
     recommended: tuple[str, str],
@@ -285,7 +313,7 @@ def generate_readme_table(
         print_files = [name for name in latest_files if name.startswith("swift_book_print")]
         latest_row = (
             "| Latest | "
-            f"{format_release_date(latest_release_date(upstream_repo_dir, allow_local_fallback))} | "
+            f"{format_release_date(latest_release_date(manifest, upstream_repo_dir, allow_local_fallback))} | "
             "[Open ↗](swift-book/latest) | "
             f"{render_file_links('swift-book/latest', digital_files)} | "
             f"{render_file_links('swift-book/latest', print_files)} |"
@@ -311,7 +339,7 @@ def generate_readme_table(
                 if bold_recommended:
                     version_cell = f"**{version_cell}**"
             lines.append(
-                f"| {version_cell} | {format_release_date(release_date(entry['version'], release['type'], release['tag'], upstream_repo_dir, allow_local_fallback))} | {folder_link} | "
+                f"| {version_cell} | {format_release_date(release_date(entry['version'], release['type'], release['tag'], manifest, upstream_repo_dir, allow_local_fallback))} | {folder_link} | "
                 f"{render_file_links(base_path, digital_files)} | "
                 f"{render_file_links(base_path, print_files)} |"
             )
@@ -323,10 +351,12 @@ def generate_readme_table(
 def update_readme(versions: list[dict], upstream_repo_dir: Path | None, allow_local_fallback: bool) -> None:
     """Inject the version table between the sentinel comments in README.md."""
     readme = README_PATH.read_text()
+    manifest = load_release_manifest()
     recommended_version_name, recommended_release_type, recommended_label = recommended_release(versions)
     intro = generate_versions_intro(recommended_label)
     primary_table = generate_readme_table(
         versions,
+        manifest,
         upstream_repo_dir,
         allow_local_fallback,
         (recommended_version_name, recommended_release_type),
@@ -337,6 +367,7 @@ def update_readme(versions: list[dict], upstream_repo_dir: Path | None, allow_lo
     )
     previous_versions_table = generate_readme_table(
         versions,
+        manifest,
         upstream_repo_dir,
         allow_local_fallback,
         (recommended_version_name, recommended_release_type),

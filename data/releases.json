@@ -1,0 +1,75 @@
+{
+  "latest": {
+    "date": "2026-03-24"
+  },
+  "releases": {
+    "5.8/beta-1": {
+      "date": "2023-02-17",
+      "tag": "swift-5.8-beta-1"
+    },
+    "5.8/fcs": {
+      "date": "2023-03-31",
+      "tag": "swift-5.8-fcs"
+    },
+    "5.9/beta-1": {
+      "date": "2023-06-05",
+      "tag": "swift-5.9-beta-1"
+    },
+    "5.9/fcs": {
+      "date": "2023-09-18",
+      "tag": "swift-5.9-fcs"
+    },
+    "5.9.2/beta-3": {
+      "date": "2023-11-14",
+      "tag": "swift-5.9.2-beta-3"
+    },
+    "5.9.2/fcs": {
+      "date": "2023-12-12",
+      "tag": "swift-5.9.2-fcs"
+    },
+    "5.10/beta-3": {
+      "date": "2024-02-13",
+      "tag": "swift-5.10-beta-3"
+    },
+    "5.10/fcs": {
+      "date": "2024-03-05",
+      "tag": "swift-5.10-fcs"
+    },
+    "6.0/beta-1": {
+      "date": "2024-06-10",
+      "tag": "swift-6.0-beta-1"
+    },
+    "6.0/beta-5": {
+      "date": "2024-08-08",
+      "tag": "swift-6.0-beta-5"
+    },
+    "6.0/fcs": {
+      "date": "2024-09-16",
+      "tag": "swift-6.0-fcs"
+    },
+    "6.1/fcs": {
+      "date": "2025-03-31",
+      "tag": "swift-6.1-fcs"
+    },
+    "6.2/beta-1": {
+      "date": "2025-06-09",
+      "tag": "swift-6.2-beta-1"
+    },
+    "6.2/fcs": {
+      "date": "2025-09-16",
+      "tag": "swift-6.2-fcs"
+    },
+    "6.2.1/fcs": {
+      "date": "2025-11-03",
+      "tag": "swift-6.2.1-fcs"
+    },
+    "6.2.3/fcs": {
+      "date": "2025-12-15",
+      "tag": "swift-6.2.3-fcs"
+    },
+    "6.3/beta-3": {
+      "date": "2026-03-11",
+      "tag": "swift-6.3-beta-3"
+    }
+  }
+}
