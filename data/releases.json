@@ -1,7 +1,8 @@
 {
   "latest": {
     "date": "2026-04-03",
-    "sha": "2306b38fdd2235b9d7a070e342098c2e08dda90d"
+    "sha": "2306b38fdd2235b9d7a070e342098c2e08dda90d",
+    "message": "extracts the grammar generation step into it's own script (#454)\n\nThis lets us run this setup script with an external repository's\n(swiftlang/docs) build script to do the expected prep work for the DocC\ncatalog in order to combine it with other DocC catalogs for a combined\narchive of multiple doc sets together.\n\nwork needed to support https://github.com/swiftlang/docs/pull/72,\nultimately to support https://github.com/swiftlang/docs/issues/24"
   },
   "releases": {
     "5.8/beta-1": {

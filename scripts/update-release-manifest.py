@@ -89,7 +89,7 @@ def ordered_manifest(manifest: dict) -> OrderedDict:
     ordered = OrderedDict()
     ordered["latest"] = OrderedDict(
         (key, manifest.get("latest", {}).get(key))
-        for key in ("date", "sha")
+        for key in ("date", "sha", "message")
         if key in manifest.get("latest", {})
     )
 
@@ -165,10 +165,12 @@ def update_latest_entry(manifest: dict, repo_dir: Path, sha: str | None, publish
     target = sha or "HEAD"
     latest_sha = git_output(repo_dir, "rev-parse", target)
     latest_date = git_output(repo_dir, "show", "-s", "--format=%cs", latest_sha)
+    latest_message = git_output(repo_dir, "show", "-s", "--format=%B", latest_sha)
     manifest["latest"] = {
         **manifest.get("latest", {}),
         "date": latest_date,
         "sha": latest_sha,
+        "message": latest_message,
     }
 
     tags = [tag for tag in git_output(repo_dir, "tag", "--points-at", latest_sha).splitlines() if tag]
