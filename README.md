@@ -80,7 +80,7 @@ The PDF book is available in four editions to suit any setup.
 <!-- VERSION-INDEX:START -->
 The latest numbered release, **6.3 (Beta 3)**, is the best choice for most readers, and mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/). 
 
-**Latest** is a continuously updated preview of _The Swift Programming Language_ and may include changes before an official release.
+**Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.
 
 | Version | Release Date | Folder | Digital | Print |
 |---------|--------------|--------|---------|-------|

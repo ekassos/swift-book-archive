@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright 2025 Evangelos Kassos
+# Copyright 2026 Evangelos Kassos
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -246,8 +246,8 @@ def generate_versions_intro(recommended_label: str) -> str:
 def generate_latest_intro() -> str:
     """Generate helper text for the Latest preview row."""
     return (
-        "**Latest** is a continuously updated preview of _The Swift Programming Language_ and may include "
-        "changes before an official release."
+        "**Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include "
+        "unpublished changes before an official release."
     )
 
 
