@@ -1,0 +1,94 @@
+{
+  "latest": {
+    "date": "2026-04-03",
+    "sha": "2306b38fdd2235b9d7a070e342098c2e08dda90d",
+    "message": "extracts the grammar generation step into it's own script (#454)\n\nThis lets us run this setup script with an external repository's\n(swiftlang/docs) build script to do the expected prep work for the DocC\ncatalog in order to combine it with other DocC catalogs for a combined\narchive of multiple doc sets together.\n\nwork needed to support https://github.com/swiftlang/docs/pull/72,\nultimately to support https://github.com/swiftlang/docs/issues/24"
+  },
+  "releases": {
+    "5.8/beta-1": {
+      "date": "2023-02-17",
+      "sha": "99fbd568e27a3bf4e8b8409093eac61ea9cdcd2b",
+      "tag": "swift-5.8-beta-1"
+    },
+    "5.8/fcs": {
+      "date": "2023-03-31",
+      "sha": "afb588a52e120f7d37515fd2fe2e1691b50fe276",
+      "tag": "swift-5.8-fcs"
+    },
+    "5.9/beta-1": {
+      "date": "2023-06-05",
+      "sha": "21e43574a59985e66446a78c27d6c30715063b13",
+      "tag": "swift-5.9-beta-1"
+    },
+    "5.9/fcs": {
+      "date": "2023-09-18",
+      "sha": "0b950a9f9da0480a935f14b0f3fff5fc4f7da463",
+      "tag": "swift-5.9-fcs"
+    },
+    "5.9.2/beta-3": {
+      "date": "2023-11-14",
+      "sha": "355e91cfa535f22b68e81ac0c233749b65c7c108",
+      "tag": "swift-5.9.2-beta-3"
+    },
+    "5.9.2/fcs": {
+      "date": "2023-12-12",
+      "sha": "b300d9cc45131d20c8a7c315650370465a4104d5",
+      "tag": "swift-5.9.2-fcs"
+    },
+    "5.10/beta-3": {
+      "date": "2024-02-13",
+      "sha": "f9e231e22a7504a4acbd40ba0e4f01fb22fed1f7",
+      "tag": "swift-5.10-beta-3"
+    },
+    "5.10/fcs": {
+      "date": "2024-03-05",
+      "sha": "a95a1d5adf32935a74021f0b90ba2f1580467c94",
+      "tag": "swift-5.10-fcs"
+    },
+    "6.0/beta-1": {
+      "date": "2024-06-10",
+      "sha": "26bb01cfb0990b2e2662ea4057f60e3c866691d6",
+      "tag": "swift-6-beta-1"
+    },
+    "6.0/beta-5": {
+      "date": "2024-08-08",
+      "sha": "a67511c7900b3d1dbfaafb48c57c9c025eeadc78",
+      "tag": "swift-6-beta-5"
+    },
+    "6.0/fcs": {
+      "date": "2024-09-16",
+      "sha": "8fc9ef0037d16237da734fd2d33a72c62d12bf97",
+      "tag": "swift-6-fcs"
+    },
+    "6.1/fcs": {
+      "date": "2025-03-31",
+      "sha": "378f76a4a0fb29cd72722686f78cb7c097437796",
+      "tag": "swift-6.1-fcs"
+    },
+    "6.2/beta-1": {
+      "date": "2025-06-09",
+      "sha": "339c2f229dea2dcf1433a08faed0500b5bb32601",
+      "tag": "swift-6.2-beta-1"
+    },
+    "6.2/fcs": {
+      "date": "2025-09-16",
+      "sha": "cf615eda331a3bb08276a74ee14a30ca203a03f1",
+      "tag": "swift-6.2-fcs"
+    },
+    "6.2.1/fcs": {
+      "date": "2025-11-03",
+      "sha": "53a2a1df6e047ce370d41d9479bdc9b1ed4b98f8",
+      "tag": "swift-6.2.1-fcs"
+    },
+    "6.2.3/fcs": {
+      "date": "2025-12-15",
+      "sha": "6050fb5aee09e6a0dff477772ef1a9e39c672566",
+      "tag": "swift-6.2.3-fcs"
+    },
+    "6.3/beta-3": {
+      "date": "2026-03-11",
+      "sha": "5396a77fc00d3f5ef4ed41e019ee71cf2de776dc",
+      "tag": "swift-6.3-beta-3"
+    }
+  }
+}

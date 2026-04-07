@@ -1,4 +1,4 @@
-# Copyright 2025 Evangelos Kassos
+# Copyright 2025-2026 Evangelos Kassos
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,11 +34,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Read stored swift-book commit SHA
+      - name: Read stored release metadata
         id: read_last_sha
         run: |
-          if [ -f .github/sha ]; then
-            echo "LAST_BUILT_SHA=$(cat .github/sha)" >> $GITHUB_ENV
+          if [ -f .github/automation/releases.json ]; then
+            echo "LAST_BUILT_SHA=$(jq -r '.latest.sha // empty' .github/automation/releases.json)" >> $GITHUB_ENV
           else
             echo "LAST_BUILT_SHA=" >> $GITHUB_ENV
           fi
@@ -165,8 +165,8 @@ jobs:
         env:
           SHA: ${{ matrix.sha }}
         run: |
-          if [ -f .github/sha ]; then
-            LAST_BUILT_SHA=$(cat .github/sha)
+          if [ -f .github/automation/releases.json ]; then
+            LAST_BUILT_SHA=$(jq -r '.latest.sha // empty' .github/automation/releases.json)
             if [ "$SHA" = "$LAST_BUILT_SHA" ]; then
               SHA_SHORT=$(echo "$SHA" | cut -c1-7)
               echo "SHA $SHA_SHORT already built, skipping..."
@@ -222,8 +222,6 @@ jobs:
           echo "latest_msg<<EOF" >> $GITHUB_OUTPUT
           echo "$LATEST_MSG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-          # Save SHA to a file
-          echo "$LATEST_SHA_LOCAL" > latest-swift-book-sha-latest.txt
           # Fetch tags that point to this commit
           TAG_JSON=$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
             "https://api.github.com/repos/swiftlang/swift-book/tags")
@@ -231,6 +229,18 @@ jobs:
           echo "Tag name: $TAG_NAME"
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          # Compute grouped directory path from tag name (e.g., swift-6.2-fcs -> 6.2/fcs)
+          if [ -n "$TAG_NAME" ]; then
+            TAG_DIR_PATH=$(echo "$TAG_NAME" | sed -E 's/^swift-//; s/^([0-9]+)(-)/\1.0\2/; s/-(fcs|beta-.*)/\/\1/')
+            echo "Tag directory path: $TAG_DIR_PATH"
+          else
+            TAG_DIR_PATH=""
+          fi
+          echo "TAG_DIR_PATH=$TAG_DIR_PATH" >> $GITHUB_ENV
+          echo "tag_dir_path=$TAG_DIR_PATH" >> $GITHUB_OUTPUT
+          LATEST_DATE=$(echo "$COMMIT_JSON" | jq -r '.commit.committer.date // .commit.author.date' | cut -dT -f1)
+          echo "LATEST_DATE=$LATEST_DATE" >> $GITHUB_ENV
+          echo "latest_date=$LATEST_DATE" >> $GITHUB_OUTPUT
 
       - name: Download SF Pro Fonts DMG
         if: steps.check_sha.outputs.skip != 'true'
@@ -306,7 +316,7 @@ jobs:
       - name: Generate PDFs
         if: steps.check_sha.outputs.skip != 'true'
         run: |
-          mkdir -p swift-book
+          mkdir -p archive
 
           # Helper function to run commands quietly unless debug is enabled
           run_quiet() {
@@ -319,29 +329,41 @@ jobs:
 
           # Generate digital light mode PDF
           echo "Generating digital light mode PDF..."
-          run_quiet swift_book_pdf -i ./swift-book-repo swift-book/latest/swift_book_digital.pdf
+          run_quiet swift_book_pdf -i ./swift-book-repo archive/latest/swift_book_digital.pdf
 
           # Generate digital dark mode PDF
           echo "Generating digital dark mode PDF..."
-          run_quiet swift_book_pdf -i ./swift-book-repo --dark swift-book/latest/swift_book_digital_dark.pdf
+          run_quiet swift_book_pdf -i ./swift-book-repo --dark archive/latest/swift_book_digital_dark.pdf
 
           # Generate print light mode PDF
           echo "Generating print light mode PDF..."
-          run_quiet swift_book_pdf -i ./swift-book-repo --mode print swift-book/latest/swift_book_print.pdf
+          run_quiet swift_book_pdf -i ./swift-book-repo --mode print archive/latest/swift_book_print.pdf
 
           # Generate print dark mode PDF
           echo "Generating print dark mode PDF..."
-          run_quiet swift_book_pdf -i ./swift-book-repo --mode print --dark swift-book/latest/swift_book_print_dark.pdf
+          run_quiet swift_book_pdf -i ./swift-book-repo --mode print --dark archive/latest/swift_book_print_dark.pdf
 
-          # If this commit has a tag, also copy PDFs into that tag folder
-          if [ -n "${{ steps.swiftbook_sha.outputs.tag_name }}" ]; then
-            TAG_DIR="swift-book/${{ steps.swiftbook_sha.outputs.tag_name }}"
+          # If this commit has a tag, also copy PDFs into the grouped directory
+          if [ -n "${{ steps.swiftbook_sha.outputs.tag_dir_path }}" ]; then
+            TAG_DIR="archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}"
             mkdir -p "$TAG_DIR"
-            cp swift-book/latest/*.pdf "$TAG_DIR"/
+            cp archive/latest/*.pdf "$TAG_DIR"/
             echo "Also copied PDFs to $TAG_DIR"
           fi
 
           echo "All PDFs generated successfully!"
+
+      - name: Update release manifest
+        if: steps.check_sha.outputs.skip != 'true'
+        run: python3 .github/automation/scripts/update-release-manifest.py --sha "$LATEST_SHA" --upstream-repo swift-book-repo
+
+      - name: Regenerate README index
+        if: steps.check_sha.outputs.skip != 'true'
+        run: python3 .github/automation/scripts/generate-index.py
+
+      - name: Regenerate folder READMEs
+        if: steps.check_sha.outputs.skip != 'true'
+        run: python3 .github/automation/scripts/generate-folder-readmes.py
 
       - name: Commit and push PDFs to repository
         if: steps.check_sha.outputs.skip != 'true'
@@ -350,15 +372,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Move latest SHA file
-          mv latest-swift-book-sha-latest.txt .github/sha
-
           # Add PDFs (won’t fail if none exist)
-          git add swift-book/latest/*.pdf || true
-          if [ -n "${{ steps.swiftbook_sha.outputs.tag_name }}" ]; then
-            git add swift-book/${{ steps.swiftbook_sha.outputs.tag_name }}/*.pdf || true
+          git add archive/latest/*.pdf || true
+          if [ -n "${{ steps.swiftbook_sha.outputs.tag_dir_path }}" ]; then
+            git add "archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}"/*.pdf || true
           fi
-          git add .github/sha
+          git add archive/README.md archive/*/README.md archive/*/*/README.md || true
+          git add .github/automation/releases.json README.md
 
           # Check if there’s anything staged
           if git diff --staged --quiet; then
@@ -375,25 +395,25 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Tag commit if upstream is tagged
-        if: steps.check_sha.outputs.skip != 'true' && steps.swiftbook_sha.outputs.TAG_NAME != ''
+        if: steps.check_sha.outputs.skip != 'true' && steps.swiftbook_sha.outputs.tag_name != ''
         run: |
-          git tag "${{ steps.swiftbook_sha.outputs.TAG_NAME }}"
-          git push origin "${{ steps.swiftbook_sha.outputs.TAG_NAME }}"
+          git tag "${{ steps.swiftbook_sha.outputs.tag_name }}"
+          git push origin "${{ steps.swiftbook_sha.outputs.tag_name }}"
 
       - name: Create release and upload PDFs if upstream is tagged
-        if: steps.check_sha.outputs.skip != 'true' && steps.swiftbook_sha.outputs.TAG_NAME != ''
+        if: steps.check_sha.outputs.skip != 'true' && steps.swiftbook_sha.outputs.tag_name != ''
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.swiftbook_sha.outputs.TAG_NAME }}
-          name: ${{ steps.swiftbook_sha.outputs.TAG_NAME }}
+          tag_name: ${{ steps.swiftbook_sha.outputs.tag_name }}
+          name: ${{ steps.swiftbook_sha.outputs.tag_name }}
           body: |
-            Release for Swift Book upstream tag ${{ steps.swiftbook_sha.outputs.TAG_NAME }}
+            Release for Swift Book upstream tag ${{ steps.swiftbook_sha.outputs.tag_name }}
 
-            https://github.com/swiftlang/swift-book/releases/tag/${{ steps.swiftbook_sha.outputs.TAG_NAME }}
+            https://github.com/swiftlang/swift-book/releases/tag/${{ steps.swiftbook_sha.outputs.tag_name }}
           files: |
-            swift-book/${{ steps.swiftbook_sha.outputs.TAG_NAME }}/swift_book_digital.pdf
-            swift-book/${{ steps.swiftbook_sha.outputs.TAG_NAME }}/swift_book_digital_dark.pdf
-            swift-book/${{ steps.swiftbook_sha.outputs.TAG_NAME }}/swift_book_print.pdf
-            swift-book/${{ steps.swiftbook_sha.outputs.TAG_NAME }}/swift_book_print_dark.pdf
+            archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}/swift_book_digital.pdf
+            archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}/swift_book_digital_dark.pdf
+            archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}/swift_book_print.pdf
+            archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}/swift_book_print_dark.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
