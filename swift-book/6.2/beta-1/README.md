@@ -15,4 +15,3 @@ Release date: Jun 9, 2025
 
 - [Back to this version](..)
 - [Back to all versions](../..)
-- [Latest preview](../../latest)

@@ -183,7 +183,6 @@ def generate_version_readme(manifest: dict, version: str, releases: list[str], i
             "## More",
             "",
             "- [Back to all versions](..)",
-            "- [Latest preview](../latest)",
         ]
     )
     write_readme(version_dir / "README.md", lines)
@@ -214,7 +213,6 @@ def generate_release_readme(manifest: dict, version: str, release_type: str, is_
             "",
             "- [Back to this version](..)",
             "- [Back to all versions](../..)",
-            "- [Latest preview](../../latest)",
         ]
     )
     write_readme(release_dir / "README.md", lines)
@@ -258,7 +256,6 @@ def generate_latest_readme(manifest: dict) -> None:
             "## More",
             "",
             "- [Back to all versions](..)",
-            "- [Back to the archive](../../)",
         ]
     )
     write_readme(latest_dir / "README.md", lines)

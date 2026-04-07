@@ -17,4 +17,3 @@ This is the latest numbered release, and the best choice for most readers. It mi
 
 - [Back to this version](..)
 - [Back to all versions](../..)
-- [Latest preview](../../latest)

@@ -8,4 +8,3 @@ Download PDF editions of _The Swift Programming Language_ book for Swift 5.10. C
 ## More
 
 - [Back to all versions](..)
-- [Latest preview](../latest)

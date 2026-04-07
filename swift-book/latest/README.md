@@ -34,4 +34,3 @@ ultimately to support https://github.com/swiftlang/docs/issues/24
 ## More
 
 - [Back to all versions](..)
-- [Back to the archive](../../)

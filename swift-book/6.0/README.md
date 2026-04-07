@@ -9,4 +9,3 @@ Download PDF editions of _The Swift Programming Language_ book for Swift 6.0. Ch
 ## More
 
 - [Back to all versions](..)
-- [Latest preview](../latest)
