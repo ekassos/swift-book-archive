@@ -1,4 +1,4 @@
-# Copyright 2025 Evangelos Kassos
+# Copyright 2025-2026 Evangelos Kassos
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -165,8 +165,8 @@ jobs:
         env:
           SHA: ${{ matrix.sha }}
         run: |
-          if [ -f .github/sha ]; then
-            LAST_BUILT_SHA=$(cat .github/sha)
+          if [ -f data/releases.json ]; then
+            LAST_BUILT_SHA=$(jq -r '.latest.sha // empty' data/releases.json)
             if [ "$SHA" = "$LAST_BUILT_SHA" ]; then
               SHA_SHORT=$(echo "$SHA" | cut -c1-7)
               echo "SHA $SHA_SHORT already built, skipping..."
@@ -355,36 +355,7 @@ jobs:
 
       - name: Update release manifest
         if: steps.check_sha.outputs.skip != 'true'
-        run: |
-          mkdir -p data
-
-          if [ -f data/releases.json ]; then
-            cp data/releases.json /tmp/releases.json
-          else
-            printf '%s\n' '{"latest":{},"releases":{}}' > /tmp/releases.json
-          fi
-
-          jq -S \
-            --arg latest_sha "$LATEST_SHA" \
-            --arg latest_date "$LATEST_DATE" \
-            --arg tag_name "$TAG_NAME" \
-            --arg tag_dir_path "$TAG_DIR_PATH" \
-            '
-            .latest = ((.latest // {}) + {
-              sha: $latest_sha,
-              date: $latest_date
-            })
-            | .releases = (.releases // {})
-            | if $tag_dir_path != "" then
-                .releases[$tag_dir_path] = ((.releases[$tag_dir_path] // {}) + {
-                  tag: $tag_name,
-                  sha: $latest_sha,
-                  date: $latest_date
-                })
-              else
-                .
-              end
-            ' /tmp/releases.json > data/releases.json
+        run: python3 scripts/update-release-manifest.py --sha "$LATEST_SHA" --upstream-repo swift-book-repo
 
       - name: Regenerate README index
         if: steps.check_sha.outputs.skip != 'true'
