@@ -13,22 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Update the README version index from the swift-book directory tree."""
+"""Update the README version index from the local swift-book tree and release manifest."""
 
-import argparse
 from datetime import datetime
 import json
 import re
-import subprocess
-import tempfile
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 BOOK_DIR = REPO_ROOT / "swift-book"
 README_PATH = REPO_ROOT / "README.md"
 DATA_PATH = REPO_ROOT / "data" / "releases.json"
-UPSTREAM_BOOK_DIR = REPO_ROOT / "swift-book-repo"
-UPSTREAM_REPO_URL = "https://github.com/swiftlang/swift-book.git"
 
 PDF_FILES = [
     "swift_book_digital.pdf",
@@ -86,11 +81,9 @@ def scan_versions() -> list[dict]:
             if not files:
                 continue
             raw_version = version.removesuffix(".0") if re.match(r"^\d+\.0$", version) else version
-            tag = f"swift-{raw_version}-{release_type}"
             releases.append(
                 {
                     "type": release_type,
-                    "tag": tag,
                     "path": f"swift-book/{version}/{release_type}",
                     "files": files,
                 }
@@ -140,118 +133,15 @@ def load_release_manifest() -> dict:
         return json.load(handle)
 
 
-def git_output(cwd: Path, *args: str) -> str:
-    """Return stripped git command output, or an empty string if unavailable."""
-    result = subprocess.run(
-        ["git", *args],
-        cwd=cwd,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if result.returncode != 0:
-        return ""
-    return result.stdout.strip()
-
-
-def history_date_for_path(pathspec: str, latest: bool = False) -> str:
-    """Return the newest or oldest commit date affecting a path in this repo."""
-    output = git_output(REPO_ROOT, "log", "--format=%cs", "--", pathspec)
-    if not output:
-        return ""
-    lines = output.splitlines()
-    return lines[0] if latest else lines[-1]
-
-
-def resolve_upstream_repo(force: bool) -> tuple[Path | None, tempfile.TemporaryDirectory[str] | None]:
-    """Return an upstream repo path, cloning a temporary fresh copy when forced."""
-    if force:
-        tempdir = tempfile.TemporaryDirectory(prefix="swift-book-upstream-")
-        temp_path = Path(tempdir.name)
-        clone_result = subprocess.run(
-            [
-                "git",
-                "clone",
-                "--quiet",
-                "--filter=blob:none",
-                UPSTREAM_REPO_URL,
-                str(temp_path),
-            ],
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        if clone_result.returncode != 0:
-            tempdir.cleanup()
-            raise RuntimeError(clone_result.stderr.strip() or "Failed to clone upstream swift-book repository")
-        return temp_path, tempdir
-
-    if UPSTREAM_BOOK_DIR.is_dir():
-        return UPSTREAM_BOOK_DIR, None
-
-    return None, None
-
-
-def upstream_tag_date(tag: str, upstream_repo_dir: Path | None) -> str:
-    """Return the upstream tag date, falling back for lightweight tags."""
-    if upstream_repo_dir is None:
-        return ""
-
-    # Annotated tags have a tagger date; lightweight tags fall back to creator/commit date.
-    output = git_output(
-        upstream_repo_dir,
-        "for-each-ref",
-        "--format=%(taggerdate:short)%09%(creatordate:short)",
-        f"refs/tags/{tag}",
-    )
-    if not output:
-        return ""
-
-    tagger_date, _, creator_date = output.partition("\t")
-    return tagger_date or creator_date
-
-
-def release_date(
-    version: str,
-    release_type: str,
-    tag: str,
-    manifest: dict,
-    upstream_repo_dir: Path | None,
-    allow_local_fallback: bool,
-) -> str:
-    """Resolve a release date using the upstream tag date first, then local git history."""
+def release_date(version: str, release_type: str, manifest: dict) -> str:
+    """Resolve a release date from the manifest."""
     release_key = f"{version}/{release_type}"
-    manifest_date = manifest.get("releases", {}).get(release_key, {}).get("date", "")
-    if manifest_date:
-        return manifest_date
-
-    output = upstream_tag_date(tag, upstream_repo_dir)
-    if output:
-        return output
-
-    if not allow_local_fallback:
-        return ""
-
-    grouped_path = f"swift-book/{version}/{release_type}"
-    legacy_path = f"swift-book/{tag}"
-    return history_date_for_path(grouped_path) or history_date_for_path(legacy_path)
+    return manifest.get("releases", {}).get(release_key, {}).get("date", "")
 
 
-def latest_release_date(manifest: dict, upstream_repo_dir: Path | None, allow_local_fallback: bool) -> str:
-    """Resolve the latest row date from the upstream clone or local repo history."""
-    manifest_date = manifest.get("latest", {}).get("date", "")
-    if manifest_date:
-        return manifest_date
-
-    if upstream_repo_dir is not None:
-        output = git_output(upstream_repo_dir, "log", "-1", "--format=%cs", "HEAD")
-        if output:
-            return output
-
-    if not allow_local_fallback:
-        return ""
-
-    return history_date_for_path("swift-book/latest", latest=True)
+def latest_release_date(manifest: dict) -> str:
+    """Resolve the latest row date from the manifest."""
+    return manifest.get("latest", {}).get("date", "")
 
 
 def generate_versions_intro(recommended_label: str) -> str:
@@ -286,8 +176,6 @@ def generate_previous_versions_intro() -> str:
 def generate_readme_table(
     versions: list[dict],
     manifest: dict,
-    upstream_repo_dir: Path | None,
-    allow_local_fallback: bool,
     recommended: tuple[str, str],
     include_latest: bool = True,
     exclude_recommended: bool = False,
@@ -313,7 +201,7 @@ def generate_readme_table(
         print_files = [name for name in latest_files if name.startswith("swift_book_print")]
         latest_row = (
             "| Latest | "
-            f"{format_release_date(latest_release_date(manifest, upstream_repo_dir, allow_local_fallback))} | "
+            f"{format_release_date(latest_release_date(manifest))} | "
             "[Open ↗](swift-book/latest) | "
             f"{render_file_links('swift-book/latest', digital_files)} | "
             f"{render_file_links('swift-book/latest', print_files)} |"
@@ -339,7 +227,7 @@ def generate_readme_table(
                 if bold_recommended:
                     version_cell = f"**{version_cell}**"
             lines.append(
-                f"| {version_cell} | {format_release_date(release_date(entry['version'], release['type'], release['tag'], manifest, upstream_repo_dir, allow_local_fallback))} | {folder_link} | "
+                f"| {version_cell} | {format_release_date(release_date(entry['version'], release['type'], manifest))} | {folder_link} | "
                 f"{render_file_links(base_path, digital_files)} | "
                 f"{render_file_links(base_path, print_files)} |"
             )
@@ -348,7 +236,7 @@ def generate_readme_table(
     return "\n".join(lines)
 
 
-def update_readme(versions: list[dict], upstream_repo_dir: Path | None, allow_local_fallback: bool) -> None:
+def update_readme(versions: list[dict]) -> None:
     """Inject the version table between the sentinel comments in README.md."""
     readme = README_PATH.read_text()
     manifest = load_release_manifest()
@@ -357,8 +245,6 @@ def update_readme(versions: list[dict], upstream_repo_dir: Path | None, allow_lo
     primary_table = generate_readme_table(
         versions,
         manifest,
-        upstream_repo_dir,
-        allow_local_fallback,
         (recommended_version_name, recommended_release_type),
         include_latest=True,
         exclude_recommended=False,
@@ -368,8 +254,6 @@ def update_readme(versions: list[dict], upstream_repo_dir: Path | None, allow_lo
     previous_versions_table = generate_readme_table(
         versions,
         manifest,
-        upstream_repo_dir,
-        allow_local_fallback,
         (recommended_version_name, recommended_release_type),
         include_latest=False,
         exclude_recommended=True,
@@ -399,27 +283,9 @@ def update_readme(versions: list[dict], upstream_repo_dir: Path | None, allow_lo
         )
     README_PATH.write_text(readme)
 
-
-def parse_args() -> argparse.Namespace:
-    """Parse command line arguments."""
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--force",
-        action="store_true",
-        help="Fetch a fresh temporary upstream swift-book clone for dates instead of falling back to local history.",
-    )
-    return parser.parse_args()
-
-
 def main() -> None:
-    args = parse_args()
     versions = scan_versions()
-    upstream_repo_dir, tempdir = resolve_upstream_repo(args.force)
-    try:
-        update_readme(versions, upstream_repo_dir, allow_local_fallback=not args.force)
-    finally:
-        if tempdir is not None:
-            tempdir.cleanup()
+    update_readme(versions)
     print(f"Updated README.md version index for {len(versions)} versions")
 
 

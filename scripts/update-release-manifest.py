@@ -223,7 +223,8 @@ def main() -> None:
 
     try:
         updated_tags = sync_all_tags(manifest, repo_dir, published_paths) if args.sync_all_tags else 0
-        update_latest_entry(manifest, repo_dir, args.sha, published_paths)
+        if args.sha:
+            update_latest_entry(manifest, repo_dir, args.sha, published_paths)
         write_manifest(manifest)
     finally:
         if tempdir is not None:
