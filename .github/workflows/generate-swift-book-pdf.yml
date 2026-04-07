@@ -361,6 +361,10 @@ jobs:
         if: steps.check_sha.outputs.skip != 'true'
         run: python3 scripts/generate-index.py
 
+      - name: Regenerate folder READMEs
+        if: steps.check_sha.outputs.skip != 'true'
+        run: python3 scripts/generate-folder-readmes.py
+
       - name: Commit and push PDFs to repository
         if: steps.check_sha.outputs.skip != 'true'
         run: |
@@ -373,6 +377,7 @@ jobs:
           if [ -n "${{ steps.swiftbook_sha.outputs.tag_dir_path }}" ]; then
             git add "swift-book/${{ steps.swiftbook_sha.outputs.tag_dir_path }}"/*.pdf || true
           fi
+          git add swift-book/README.md swift-book/*/README.md swift-book/*/*/README.md || true
           git add data/releases.json README.md
 
           # Check if there’s anything staged
