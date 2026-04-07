@@ -1,14 +1,15 @@
-# Latest Swift Book Preview
+# Latest
 
-This folder contains the most recent preview PDFs built from the upstream swift-book repository.
+**Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.
 
 Latest commit date: 2026-04-03
 
 ## Upstream Commit
 
+SHA: `2306b38fdd2235b9d7a070e342098c2e08dda90d`
+
+Commit message:
 ```text
-SHA: 2306b38fdd2235b9d7a070e342098c2e08dda90d
-Message:
 extracts the grammar generation step into it's own script (#454)
 
 This lets us run this setup script with an external repository's
@@ -21,16 +22,16 @@ ultimately to support https://github.com/swiftlang/docs/issues/24
 ```
 
 - [View upstream commit](https://github.com/swiftlang/swift-book/commit/2306b38fdd2235b9d7a070e342098c2e08dda90d)
-- [Browse upstream repository](https://github.com/swiftlang/swift-book)
+- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/2306b38fdd2235b9d7a070e342098c2e08dda90d)
 
-## PDFs
+## Edition. Pick the one that works for you.
 
 - [Digital Light](swift_book_digital.pdf)
 - [Digital Dark](swift_book_digital_dark.pdf)
 - [Print Light](swift_book_print.pdf)
 - [Print Dark](swift_book_print_dark.pdf)
 
-## Navigation
+## More
 
-- [Back to swift-book](..)
-- [Repository README](../..)
+- [Back to all versions](..)
+- [Back to the archive](../..)

@@ -1,12 +1,16 @@
-# Swift Book Files
+# Swift Book Archive
 
-Browse the PDF editions stored in this folder.
+Download current and previous PDF editions of _The Swift Programming Language_ book from this folder.
 
-## Latest
+## Version. Choose a corresponding Swift version.
 
-- [Latest preview](latest) (2026-04-03)
+The latest numbered release, **6.3 (Beta 3)**, is the best choice for most readers, and mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/).
 
-## Versions
+**Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.
+
+- [Latest](latest) (2026-04-03)
+
+If you're working with a specific Swift version, choose the matching numbered release.
 
 - [Swift 6.3](6.3)
 - [Swift 6.2.3](6.2.3)

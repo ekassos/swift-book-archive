@@ -1,10 +1,10 @@
 # Swift 6.2.3
 
-Available releases in this folder:
+Download PDF editions of _The Swift Programming Language_ book for Swift 6.2.3. Choose a release.
 
 - [Stable](fcs) (2025-12-15)
 
-## Navigation
+## More
 
-- [Back to swift-book](..)
+- [Back to all versions](..)
 - [Latest preview](../latest)

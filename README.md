@@ -1,6 +1,6 @@
 # Swift Book Archive
 
-Download current and previous PDF editions of the _The Swift Programming Language_ book. 
+Download current and previous PDF editions of _The Swift Programming Language_ book.
 
 <picture>
   <!-- User prefers light mode: -->

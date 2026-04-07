@@ -72,6 +72,24 @@ def latest_message(manifest: dict) -> str:
     return manifest.get("latest", {}).get("message", "")
 
 
+def latest_numbered_release(versions: list[tuple[str, list[str]]]) -> tuple[str, str]:
+    """Return (version, release_type) for the latest numbered release."""
+    if not versions:
+        return ("", "")
+    latest_version, releases = versions[-1]
+    return (latest_version, releases[-1])
+
+
+def version_release_label(version: str, release_type: str) -> str:
+    """Format a human-readable label like '6.3 (Beta 3)' or '6.2.3'."""
+    if release_type == "fcs":
+        return version
+    return f"{version} ({release_label(release_type)})"
+
+
+DOCS_SWIFT_ORG = "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/"
+
+
 def pdf_links(directory: Path) -> list[str]:
     links = []
     for filename, label in PDF_FILES.items():
@@ -103,47 +121,63 @@ def scan_versions() -> list[tuple[str, list[str]]]:
 
 
 def generate_root_readme(manifest: dict, versions: list[tuple[str, list[str]]]) -> None:
+    lv, lr = latest_numbered_release(versions)
+    label = version_release_label(lv, lr)
     lines = [
-        "# Swift Book Files",
+        "# Swift Book Archive",
         "",
-        "Browse the PDF editions stored in this folder.",
+        "Download current and previous PDF editions of _The Swift Programming Language_ book from this folder.",
         "",
-        "## Latest",
-        "",
-        f"- [Latest preview](latest) ({latest_date(manifest) or 'date unavailable'})",
-        "",
-        "## Versions",
+        "## Version. Choose a corresponding Swift version.",
         "",
     ]
+    if lv:
+        lines.extend([
+            f"The latest numbered release, **{label}**, is the best choice for most readers, and mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org]({DOCS_SWIFT_ORG}).",
+            "",
+        ])
+    lines.extend([
+        "**Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.",
+        "",
+        f"- [Latest](latest) ({latest_date(manifest) or 'date unavailable'})",
+        "",
+        "If you're working with a specific Swift version, choose the matching numbered release.",
+        "",
+    ])
     for version, _ in reversed(versions):
         lines.append(f"- [Swift {version}]({version})")
     write_readme(BOOK_DIR / "README.md", lines)
 
 
-def generate_version_readme(manifest: dict, version: str, releases: list[str]) -> None:
+def generate_version_readme(manifest: dict, version: str, releases: list[str], is_latest_version: bool, latest_rel: str) -> None:
     version_dir = BOOK_DIR / version
     lines = [
         f"# Swift {version}",
         "",
-        "Available releases in this folder:",
+        f"Download PDF editions of _The Swift Programming Language_ book for Swift {version}. Choose a release.",
         "",
     ]
+    if is_latest_version:
+        lines.extend([
+            f"**{release_label(latest_rel)}** is the latest release, and the best choice for most readers. It mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org]({DOCS_SWIFT_ORG}).",
+            "",
+        ])
     for release_type in reversed(releases):
         date = release_date(manifest, version, release_type) or "date unavailable"
         lines.append(f"- [{release_label(release_type)}]({release_type}) ({date})")
     lines.extend(
         [
             "",
-            "## Navigation",
+            "## More",
             "",
-            "- [Back to swift-book](..)",
+            "- [Back to all versions](..)",
             "- [Latest preview](../latest)",
         ]
     )
     write_readme(version_dir / "README.md", lines)
 
 
-def generate_release_readme(manifest: dict, version: str, release_type: str) -> None:
+def generate_release_readme(manifest: dict, version: str, release_type: str, is_latest_release: bool) -> None:
     release_dir = BOOK_DIR / version / release_type
     lines = [
         f"# Swift {version} {release_label(release_type)}",
@@ -151,16 +185,23 @@ def generate_release_readme(manifest: dict, version: str, release_type: str) -> 
     ]
     date = release_date(manifest, version, release_type)
     if date:
-        lines.extend([f"Release date: {date}", ""])
-    lines.extend(["## PDFs", ""])
+        lines.extend([f"Download PDF editions of _The Swift Programming Language_ book for Swift {version} {release_label(release_type)}.", "", f"Release date: {date}", ""])
+    else:
+        lines.extend([f"Download PDF editions of _The Swift Programming Language_ book for Swift {version} {release_label(release_type)}.", ""])
+    if is_latest_release:
+        lines.extend([
+            f"This is the latest numbered release, and the best choice for most readers. It mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org]({DOCS_SWIFT_ORG}).",
+            "",
+        ])
+    lines.extend(["## Edition. Pick the one that works for you.", ""])
     lines.extend(pdf_links(release_dir) or ["- No PDFs found in this folder."])
     lines.extend(
         [
             "",
-            "## Navigation",
+            "## More",
             "",
             "- [Back to this version](..)",
-            "- [Back to swift-book](../..)",
+            "- [Back to all versions](../..)",
             "- [Latest preview](../../latest)",
         ]
     )
@@ -170,9 +211,9 @@ def generate_release_readme(manifest: dict, version: str, release_type: str) -> 
 def generate_latest_readme(manifest: dict) -> None:
     latest_dir = BOOK_DIR / "latest"
     lines = [
-        "# Latest Swift Book Preview",
+        "# Latest",
         "",
-        "This folder contains the most recent preview PDFs built from the upstream swift-book repository.",
+        "**Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.",
         "",
     ]
     date = latest_date(manifest)
@@ -185,26 +226,27 @@ def generate_latest_readme(manifest: dict) -> None:
             [
                 "## Upstream Commit",
                 "",
+                f"SHA: `{sha}`",
+                "",
+                "Commit message:",
                 "```text",
-                f"SHA: {sha}",
-                "Message:",
                 *(message.splitlines() or [""]),
                 "```",
                 "",
                 f"- [View upstream commit](https://github.com/swiftlang/swift-book/commit/{sha})",
-                "- [Browse upstream repository](https://github.com/swiftlang/swift-book)",
+                f"- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/{sha})",
                 "",
             ]
         )
-    lines.extend(["## PDFs", ""])
+    lines.extend(["## Edition. Pick the one that works for you.", ""])
     lines.extend(pdf_links(latest_dir) or ["- No PDFs found in this folder."])
     lines.extend(
         [
             "",
-            "## Navigation",
+            "## More",
             "",
-            "- [Back to swift-book](..)",
-            "- [Repository README](../..)",
+            "- [Back to all versions](..)",
+            "- [Back to the archive](../..)",
         ]
     )
     write_readme(latest_dir / "README.md", lines)
@@ -213,12 +255,15 @@ def generate_latest_readme(manifest: dict) -> None:
 def main() -> None:
     manifest = load_manifest()
     versions = scan_versions()
+    lv, lr = latest_numbered_release(versions)
     generate_root_readme(manifest, versions)
     generate_latest_readme(manifest)
     for version, releases in versions:
-        generate_version_readme(manifest, version, releases)
+        is_latest_version = version == lv
+        generate_version_readme(manifest, version, releases, is_latest_version, lr)
         for release_type in releases:
-            generate_release_readme(manifest, version, release_type)
+            is_latest_release = is_latest_version and release_type == lr
+            generate_release_readme(manifest, version, release_type, is_latest_release)
     print(f"Generated folder READMEs for {len(versions)} versions")
 
 
