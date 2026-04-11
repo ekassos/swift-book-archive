@@ -10,6 +10,7 @@ Licensed under Apache License v2.0 with Runtime Library Exception
 See https://swift.org/LICENSE.txt for details.
 The Swift project authors are credited at https://swift.org/CONTRIBUTORS.txt.
 
+
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -232,6 +233,7 @@ https://github.com/ekassos/swift-book-pdf
 Copyright (c) 2025-2026 Evangelos Kassos
 Licensed under the Apache License, Version 2.0
 
+
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -447,6 +449,7 @@ Licensed under Apache License v2.0 with Runtime Library Exception
 See https://swift.org/LICENSE.txt for details.
 The Swift project authors are credited at https://swift.org/CONTRIBUTORS.txt.
 
+
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -658,6 +661,7 @@ The Swift project authors are credited at https://swift.org/CONTRIBUTORS.txt.
     portions of this Software are embedded into the binary product as a result,
     you may redistribute such product without providing attribution as would
     otherwise be required by Sections 4(a), 4(b) and 4(d) of the License.
+
 
 
                         The Swift-DocC-Render Project
