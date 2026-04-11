@@ -353,6 +353,28 @@ jobs:
 
           echo "All PDFs generated successfully!"
 
+      - name: Generate EPUB
+        if: steps.check_sha.outputs.skip != 'true'
+        run: |
+          echo "Generating EPUB..."
+          swift-book-epub \
+            -e \
+            -i ./swift-book-repo \
+            --cover-footer-line "Based on the Swift.org source" \
+            --publisher "Evangelos Kassos" \
+            --contributor "Evangelos Kassos" \
+            archive/latest/swift_book.epub
+
+          if [ -n "${{ steps.swiftbook_sha.outputs.tag_dir_path }}" ]; then
+            TAG_DIR="archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}"
+            mkdir -p "$TAG_DIR"
+            cp archive/latest/swift_book.epub "$TAG_DIR"/
+            cp archive/latest/swift_book_cover.png "$TAG_DIR"/
+            echo "Also copied EPUB to $TAG_DIR"
+          fi
+
+          echo "EPUB generated successfully!"
+
       - name: Update release manifest
         if: steps.check_sha.outputs.skip != 'true'
         run: python3 .github/automation/scripts/update-release-manifest.py --sha "$LATEST_SHA" --upstream-repo swift-book-repo
@@ -374,8 +396,12 @@ jobs:
 
           # Add PDFs (won’t fail if none exist)
           git add archive/latest/*.pdf || true
+          git add archive/latest/*.epub || true
+          git add archive/latest/*_cover.png || true
           if [ -n "${{ steps.swiftbook_sha.outputs.tag_dir_path }}" ]; then
             git add "archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}"/*.pdf || true
+            git add "archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}"/*.epub || true
+            git add "archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}"/*_cover.png || true
           fi
           git add archive/README.md archive/*/README.md archive/*/*/README.md || true
           git add .github/automation/releases.json README.md
@@ -400,7 +426,7 @@ jobs:
           git tag "${{ steps.swiftbook_sha.outputs.tag_name }}"
           git push origin "${{ steps.swiftbook_sha.outputs.tag_name }}"
 
-      - name: Create release and upload PDFs if upstream is tagged
+      - name: Create release and upload book files if upstream is tagged
         if: steps.check_sha.outputs.skip != 'true' && steps.swiftbook_sha.outputs.tag_name != ''
         uses: softprops/action-gh-release@v2
         with:
@@ -415,5 +441,7 @@ jobs:
             archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}/swift_book_digital_dark.pdf
             archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}/swift_book_print.pdf
             archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}/swift_book_print_dark.pdf
+            archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}/swift_book.epub
+            archive/${{ steps.swiftbook_sha.outputs.tag_dir_path }}/swift_book_cover.png
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
