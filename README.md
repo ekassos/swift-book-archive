@@ -121,6 +121,6 @@ PDF editions are derived from the *swift-book* [source](https://github.com/swift
 
 The *swift-book* and *swift-docc-render* repositories are part of the Swift.org open source project, which is licensed under the Apache License, Version 2.0 with Runtime Library Exception. See https://swift.org/LICENSE.txt for details. *swift-book* is Copyright © 2014–2026 Apple Inc. and the Swift project authors, and *swift-docc-render* is Copyright © 2021–2025 Apple Inc. and the Swift project authors. The Swift project authors are credited at https://swift.org/CONTRIBUTORS.txt.
 
-See [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt) for more details.
+See [THIRD-PARTY-NOTICES](THIRD-PARTY-NOTICES) for more details.
 
 The Swift logo is a trademark of Apple Inc. These editions are not published by, endorsed by, or affiliated with Apple Inc. or the Swift.org open source project.
