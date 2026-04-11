@@ -19,6 +19,7 @@ The PDF book is available in four editions to suit any setup.
 
 <details>
 <summary><strong>&nbsp;Preview Editions</strong> (click to expand)</summary>
+  <br/>
 <table>
   <tr>
     <td valign="middle" align="center" width="50%">
