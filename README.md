@@ -1,6 +1,6 @@
 # Swift Book Archive
 
-Download current and previous PDF and EPUB editions of _The Swift Programming Language_ book.
+Download PDF and EPUB editions of _The Swift Programming Language_ book across Swift releases.
 
 <picture>
   <!-- User prefers light mode: -->
@@ -15,10 +15,32 @@ Download current and previous PDF and EPUB editions of _The Swift Programming La
 
 ## Edition. Pick the one that works for you.
 
+### EPUB
+For reading on the go, the EPUB version provides a reflowable layout to fit any screen.
+
+_Prefer Apple Books?_ The full <a href="https://books.apple.com/us/book-series/swift-programming-series/id1887443754">Swift Programming Series</a> is available on Apple Books for free, with reading progress synced across your devices and new versions automatically added to the series for easy access. <a href="https://books.apple.com/us/book-series/swift-programming-series/id1887443754">Open in Apple Books &#8599;</a>
+
+<details>
+<summary><strong>&nbsp;Preview the EPUB Edition</strong> (click to expand)</summary>
+  <br/>
+<picture>
+  <!-- User prefers light mode: -->
+  <source srcset="https://github.com/user-attachments/assets/b82c63eb-a221-492e-a7e4-32e96bfe6ef4" media="(prefers-color-scheme: light)"/>
+
+  <!-- User prefers dark mode: -->
+  <source srcset="https://github.com/user-attachments/assets/0eb00db3-b0ac-4c8b-8686-f55bf2a64ccb" media="(prefers-color-scheme: dark)"/>
+
+  <!-- User has no color preference: -->
+  <img src="https://github.com/user-attachments/assets/b82c63eb-a221-492e-a7e4-32e96bfe6ef4" width="70%"/>
+</picture>
+</details>
+
+
+### PDF
 The PDF book is available in four editions to suit any setup. 
 
 <details>
-<summary><strong>&nbsp;Preview Editions</strong> (click to expand)</summary>
+<summary><strong>&nbsp;Preview PDF Editions</strong> (click to expand)</summary>
   <br/>
 <table>
   <tr>
