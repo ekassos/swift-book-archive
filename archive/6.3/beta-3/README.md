@@ -1,6 +1,6 @@
 # Swift 6.3 Beta 3
 
-Download PDF editions of _The Swift Programming Language_ book for Swift 6.3 Beta 3.
+Download PDF and EPUB editions of _The Swift Programming Language_ book for Swift 6.3 Beta 3.
 
 Release date: Mar 11, 2026
 
@@ -8,10 +8,11 @@ This is the latest numbered release, and the best choice for most readers. It mi
 
 ## Edition. Pick the one that works for you.
 
-- [Digital Light](swift_book_digital.pdf)
-- [Digital Dark](swift_book_digital_dark.pdf)
-- [Print Light](swift_book_print.pdf)
-- [Print Dark](swift_book_print_dark.pdf)
+- [EPUB](swift_book.epub)
+- [Digital Light PDF](swift_book_digital.pdf)
+- [Digital Dark PDF](swift_book_digital_dark.pdf)
+- [Print Light PDF](swift_book_print.pdf)
+- [Print Dark PDF](swift_book_print_dark.pdf)
 
 ## More
 

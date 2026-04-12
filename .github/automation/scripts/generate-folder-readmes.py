@@ -24,7 +24,8 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 BOOK_DIR = REPO_ROOT / "archive"
 DATA_PATH = REPO_ROOT / ".github" / "automation" / "releases.json"
 
-PDF_FILES = {
+EDITION_FILES = {
+    "swift_book.epub": "EPUB",
     "swift_book_digital.pdf": "Digital Light",
     "swift_book_digital_dark.pdf": "Digital Dark",
     "swift_book_print.pdf": "Print Light",
@@ -99,11 +100,12 @@ def version_release_label(version: str, release_type: str) -> str:
 DOCS_SWIFT_ORG = "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/"
 
 
-def pdf_links(directory: Path) -> list[str]:
+def edition_links(directory: Path) -> list[str]:
     links = []
-    for filename, label in PDF_FILES.items():
+    for filename, label in EDITION_FILES.items():
         if (directory / filename).is_file():
-            links.append(f"- [{label}]({filename})")
+            suffix = "" if filename == "swift_book.epub" else " PDF"
+            links.append(f"- [{label}{suffix}]({filename})")
     return links
 
 
@@ -135,7 +137,7 @@ def generate_root_readme(manifest: dict, versions: list[tuple[str, list[str]]]) 
     lines = [
         "# Swift Book Archive",
         "",
-        "Download current and previous PDF editions of _The Swift Programming Language_ book from this folder.",
+        "Download current and previous PDF and EPUB editions of _The Swift Programming Language_ book from this folder.",
         "",
         "## Version. Choose a corresponding Swift version.",
         "",
@@ -166,7 +168,7 @@ def generate_version_readme(manifest: dict, version: str, releases: list[str], i
     lines = [
         f"# Swift {version}",
         "",
-        f"Download PDF editions of _The Swift Programming Language_ book for Swift {version}. Choose a release.",
+        f"Download PDF and EPUB editions of _The Swift Programming Language_ book for Swift {version}. Choose a release.",
         "",
     ]
     if is_latest_version:
@@ -196,16 +198,16 @@ def generate_release_readme(manifest: dict, version: str, release_type: str, is_
     ]
     date = release_date(manifest, version, release_type)
     if date:
-        lines.extend([f"Download PDF editions of _The Swift Programming Language_ book for Swift {version} {release_label(release_type)}.", "", f"Release date: {date}", ""])
+        lines.extend([f"Download PDF and EPUB editions of _The Swift Programming Language_ book for Swift {version} {release_label(release_type)}.", "", f"Release date: {date}", ""])
     else:
-        lines.extend([f"Download PDF editions of _The Swift Programming Language_ book for Swift {version} {release_label(release_type)}.", ""])
+        lines.extend([f"Download PDF and EPUB editions of _The Swift Programming Language_ book for Swift {version} {release_label(release_type)}.", ""])
     if is_latest_release:
         lines.extend([
             f"This is the latest numbered release, and the best choice for most readers. It mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org]({DOCS_SWIFT_ORG}).",
             "",
         ])
     lines.extend(["## Edition. Pick the one that works for you.", ""])
-    lines.extend(pdf_links(release_dir) or ["- No PDFs found in this folder."])
+    lines.extend(edition_links(release_dir) or ["- No editions found in this folder."])
     lines.extend(
         [
             "",
@@ -247,9 +249,9 @@ def generate_latest_readme(manifest: dict) -> None:
                 f"- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/{sha})",
                 "",
             ]
-        )
+    )
     lines.extend(["## Edition. Pick the one that works for you.", ""])
-    lines.extend(pdf_links(latest_dir) or ["- No PDFs found in this folder."])
+    lines.extend(edition_links(latest_dir) or ["- No editions found in this folder."])
     lines.extend(
         [
             "",
