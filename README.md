@@ -18,7 +18,7 @@ Download PDF and EPUB editions of _The Swift Programming Language_ book across S
 ### EPUB
 For reading on the go, the EPUB version provides a reflowable layout to fit any screen.
 
-_Prefer Apple Books?_ The full <a href="https://books.apple.com/us/book-series/swift-programming-series/id1887443754">Swift Programming Series</a> is available on Apple Books for free, with reading progress synced across your devices and new versions automatically added to the series for easy access. <a href="https://books.apple.com/us/book-series/swift-programming-series/id1887443754">Open in Apple Books &#8599;</a>
+_Prefer Apple Books?_ The full <a href="https://books.apple.com/us/book-series/swift-programming-series/id1887443754">Swift Programming Series</a> is available on Apple Books for free, with reading progress synced across your devices and new versions automatically added to the series for easy access. <a href="https://books.apple.com/us/book-series/swift-programming-series/id1887443754">Open&nbsp;in&nbsp;Apple&nbsp;Books&nbsp;&#8599;</a>
 
 <details>
 <summary><strong>&nbsp;Preview the EPUB Edition</strong> (click to expand)</summary>
