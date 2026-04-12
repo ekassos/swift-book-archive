@@ -25,7 +25,8 @@ BOOK_DIR = REPO_ROOT / "archive"
 README_PATH = REPO_ROOT / "README.md"
 DATA_PATH = REPO_ROOT / ".github" / "automation" / "releases.json"
 
-PDF_FILES = [
+BOOK_FILES = [
+    "swift_book.epub",
     "swift_book_digital.pdf",
     "swift_book_digital_dark.pdf",
     "swift_book_print.pdf",
@@ -35,6 +36,7 @@ PDF_FILES = [
 README_START = "<!-- VERSION-INDEX:START -->"
 README_END = "<!-- VERSION-INDEX:END -->"
 LINK_LABELS = {
+    "swift_book.epub": "EPUB",
     "swift_book_digital.pdf": "Light",
     "swift_book_digital_dark.pdf": "Dark",
     "swift_book_print.pdf": "Light",
@@ -77,7 +79,7 @@ def scan_versions() -> list[dict]:
             if not release_dir.is_dir():
                 continue
             release_type = release_dir.name
-            files = [f.name for f in sorted(release_dir.iterdir()) if f.is_file() and f.name in PDF_FILES]
+            files = [f.name for f in sorted(release_dir.iterdir()) if f.is_file() and f.name in BOOK_FILES]
             if not files:
                 continue
             raw_version = version.removesuffix(".0") if re.match(r"^\d+\.0$", version) else version
@@ -183,7 +185,7 @@ def generate_readme_table(
     bold_recommended: bool = False,
 ) -> str:
     """Generate a Markdown table of available versions."""
-    latest_files = [f.name for f in sorted((BOOK_DIR / "latest").iterdir()) if f.is_file() and f.name in PDF_FILES]
+    latest_files = [f.name for f in sorted((BOOK_DIR / "latest").iterdir()) if f.is_file() and f.name in BOOK_FILES]
 
     def render_file_links(base_path: str, filenames: list[str]) -> str:
         links = []
@@ -192,17 +194,19 @@ def generate_readme_table(
         return " · ".join(links) if links else "-"
 
     lines = [
-        "| Version | Release Date | Folder | Digital | Print |",
-        "|---------|--------------|--------|---------|-------|",
+        "| Version | Release Date | Folder | EPUB | Digital PDF | Print PDF |",
+        "|---------|--------------|--------|------|-------------|-----------|",
     ]
 
     if include_latest and latest_files:
+        epub_files = [name for name in latest_files if name == "swift_book.epub"]
         digital_files = [name for name in latest_files if name.startswith("swift_book_digital")]
         print_files = [name for name in latest_files if name.startswith("swift_book_print")]
         latest_row = (
             "| Latest | "
             f"{format_release_date(latest_release_date(manifest))} | "
             "[Open ↗](archive/latest) | "
+            f"{render_file_links('archive/latest', epub_files)} | "
             f"{render_file_links('archive/latest', digital_files)} | "
             f"{render_file_links('archive/latest', print_files)} |"
         )
@@ -218,6 +222,7 @@ def generate_readme_table(
             if exclude_recommended and (entry["version"], release["type"]) == recommended:
                 continue
             base_path = f"archive/{entry['version']}/{release['type']}"
+            epub_files = [name for name in release["files"] if name == "swift_book.epub"]
             digital_files = [name for name in release["files"] if name.startswith("swift_book_digital")]
             print_files = [name for name in release["files"] if name.startswith("swift_book_print")]
             folder_link = f"[Open ↗]({base_path})"
@@ -228,6 +233,7 @@ def generate_readme_table(
                     version_cell = f"**{version_cell}**"
             lines.append(
                 f"| {version_cell} | {format_release_date(release_date(entry['version'], release['type'], manifest))} | {folder_link} | "
+                f"{render_file_links(base_path, epub_files)} | "
                 f"{render_file_links(base_path, digital_files)} | "
                 f"{render_file_links(base_path, print_files)} |"
             )
