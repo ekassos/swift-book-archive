@@ -27,10 +27,11 @@ Fix typo: "Whatever shape is passed it" -> "Whatever shape is passed in"
 
 ## Edition. Pick the one that works for you.
 
-- [Digital Light](swift_book_digital.pdf)
-- [Digital Dark](swift_book_digital_dark.pdf)
-- [Print Light](swift_book_print.pdf)
-- [Print Dark](swift_book_print_dark.pdf)
+- [EPUB](swift_book.epub)
+- [Digital Light PDF](swift_book_digital.pdf)
+- [Digital Dark PDF](swift_book_digital_dark.pdf)
+- [Print Light PDF](swift_book_print.pdf)
+- [Print Dark PDF](swift_book_print_dark.pdf)
 
 ## More
 
