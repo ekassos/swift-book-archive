@@ -13,7 +13,7 @@ Download PDF and EPUB editions of _The Swift Programming Language_ book across S
   <img width="100%" alt="The image shows The Swift Programming Language book displayed across three devices: a 14-inch MacBook Pro (M4) in Silver, an 11-inch iPad Pro (M4) in Space Gray, and an iPhone 17 Pro in Deep Blue. Each screen shows pages from the book titled Collection Types, featuring diagrams, code snippets, and explanations about arrays, sets, and dictionaries in Swift. Below the devices, centered text reads 'Swift Book Archive' followed by a large bold headline, 'Learn Swift anywhere.' The background is clean and light gray, emphasizing the devices and text." src="https://github.com/user-attachments/assets/f7dd8553-afda-4584-bd99-eaedbd0eb931" />
 </picture>
 
-## Edition. Pick the one that works for you.
+## Pick the edition that works for you.
 
 ### EPUB
 For reading on the go, the EPUB version provides a reflowable layout to fit any screen.
@@ -98,7 +98,7 @@ The PDF book is available in four editions to suit any setup.
 </table>
 </details>
 
-## Version. Choose a corresponding Swift version.
+## Choose a corresponding Swift version.
 
 <!-- VERSION-INDEX:START -->
 The latest numbered release, **6.3 (Beta 3)**, is the best choice for most readers, and mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/). 

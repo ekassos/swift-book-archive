@@ -2,7 +2,7 @@
 
 Download current and previous PDF and EPUB editions of _The Swift Programming Language_ book from this folder.
 
-## Version. Choose a corresponding Swift version.
+## Choose a corresponding Swift version.
 
 The latest numbered release, **6.3 (Beta 3)**, is the best choice for most readers, and mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/).
 

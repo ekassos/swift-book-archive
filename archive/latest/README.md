@@ -25,7 +25,7 @@ Fix typo: "Whatever shape is passed it" -> "Whatever shape is passed in"
 - [View upstream commit](https://github.com/swiftlang/swift-book/commit/548787e005a48f1396fedee5e0151875bf3481ae)
 - [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/548787e005a48f1396fedee5e0151875bf3481ae)
 
-## Edition. Pick the one that works for you.
+## Pick the edition that works for you.
 
 - [EPUB](swift_book.epub)
 - [Digital Light PDF](swift_book_digital.pdf)

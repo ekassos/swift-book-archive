@@ -139,7 +139,7 @@ def generate_root_readme(manifest: dict, versions: list[tuple[str, list[str]]]) 
         "",
         "Download current and previous PDF and EPUB editions of _The Swift Programming Language_ book from this folder.",
         "",
-        "## Version. Choose a corresponding Swift version.",
+        "## Choose a corresponding Swift version.",
         "",
     ]
     if lv:
@@ -206,7 +206,7 @@ def generate_release_readme(manifest: dict, version: str, release_type: str, is_
             f"This is the latest numbered release, and the best choice for most readers. It mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org]({DOCS_SWIFT_ORG}).",
             "",
         ])
-    lines.extend(["## Edition. Pick the one that works for you.", ""])
+    lines.extend(["## Pick the edition that works for you.", ""])
     lines.extend(edition_links(release_dir) or ["- No editions found in this folder."])
     lines.extend(
         [
@@ -250,7 +250,7 @@ def generate_latest_readme(manifest: dict) -> None:
                 "",
             ]
     )
-    lines.extend(["## Edition. Pick the one that works for you.", ""])
+    lines.extend(["## Pick the edition that works for you.", ""])
     lines.extend(edition_links(latest_dir) or ["- No editions found in this folder."])
     lines.extend(
         [

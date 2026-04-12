@@ -4,7 +4,7 @@ Download PDF and EPUB editions of _The Swift Programming Language_ book for Swif
 
 Release date: Jun 5, 2023
 
-## Edition. Pick the one that works for you.
+## Pick the edition that works for you.
 
 - [EPUB](swift_book.epub)
 - [Digital Light PDF](swift_book_digital.pdf)
