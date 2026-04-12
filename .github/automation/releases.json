@@ -1,8 +1,8 @@
 {
   "latest": {
-    "date": "2026-04-03",
-    "sha": "2306b38fdd2235b9d7a070e342098c2e08dda90d",
-    "message": "extracts the grammar generation step into it's own script (#454)\n\nThis lets us run this setup script with an external repository's\n(swiftlang/docs) build script to do the expected prep work for the DocC\ncatalog in order to combine it with other DocC catalogs for a combined\narchive of multiple doc sets together.\n\nwork needed to support https://github.com/swiftlang/docs/pull/72,\nultimately to support https://github.com/swiftlang/docs/issues/24"
+    "date": "2026-04-11",
+    "sha": "548787e005a48f1396fedee5e0151875bf3481ae",
+    "message": "Fix typo in OpaqueTypes Chapter (#453)\n\n<!-- If this pull request incorporates language changes from a Swift\nEvolution proposal, add the SE number in square brackets at the end of\nthe PR title. -->\n\n<!-- What's in this pull request? -->\nFix typo: \"Whatever shape is passed it\" -> \"Whatever shape is passed in\"\n\n<!-- Link to the issue that this pull request fixes, if applicable. -->"
   },
   "releases": {
     "5.8/beta-1": {

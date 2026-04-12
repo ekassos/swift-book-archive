@@ -2,27 +2,28 @@
 
 **Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.
 
-Latest commit date: Apr 3, 2026
+Latest commit date: Apr 11, 2026
 
 ## Upstream Commit
 
-SHA: `2306b38fdd2235b9d7a070e342098c2e08dda90d`
+SHA: `548787e005a48f1396fedee5e0151875bf3481ae`
 
 Commit message:
 ```text
-extracts the grammar generation step into it's own script (#454)
+Fix typo in OpaqueTypes Chapter (#453)
 
-This lets us run this setup script with an external repository's
-(swiftlang/docs) build script to do the expected prep work for the DocC
-catalog in order to combine it with other DocC catalogs for a combined
-archive of multiple doc sets together.
+<!-- If this pull request incorporates language changes from a Swift
+Evolution proposal, add the SE number in square brackets at the end of
+the PR title. -->
 
-work needed to support https://github.com/swiftlang/docs/pull/72,
-ultimately to support https://github.com/swiftlang/docs/issues/24
+<!-- What's in this pull request? -->
+Fix typo: "Whatever shape is passed it" -> "Whatever shape is passed in"
+
+<!-- Link to the issue that this pull request fixes, if applicable. -->
 ```
 
-- [View upstream commit](https://github.com/swiftlang/swift-book/commit/2306b38fdd2235b9d7a070e342098c2e08dda90d)
-- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/2306b38fdd2235b9d7a070e342098c2e08dda90d)
+- [View upstream commit](https://github.com/swiftlang/swift-book/commit/548787e005a48f1396fedee5e0151875bf3481ae)
+- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/548787e005a48f1396fedee5e0151875bf3481ae)
 
 ## Edition. Pick the one that works for you.
 

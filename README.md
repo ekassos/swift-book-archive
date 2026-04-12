@@ -86,7 +86,7 @@ The latest numbered release, **6.3 (Beta 3)**, is the best choice for most reade
 | Version | Release Date | Folder | Digital | Print |
 |---------|--------------|--------|---------|-------|
 | **6.3 (Beta 3) ★** | Mar 11, 2026 | [Open ↗](archive/6.3/beta-3) | [Light](archive/6.3/beta-3/swift_book_digital.pdf) · [Dark](archive/6.3/beta-3/swift_book_digital_dark.pdf) | [Light](archive/6.3/beta-3/swift_book_print.pdf) · [Dark](archive/6.3/beta-3/swift_book_print_dark.pdf) |
-| Latest | Apr 3, 2026 | [Open ↗](archive/latest) | [Light](archive/latest/swift_book_digital.pdf) · [Dark](archive/latest/swift_book_digital_dark.pdf) | [Light](archive/latest/swift_book_print.pdf) · [Dark](archive/latest/swift_book_print_dark.pdf) |
+| Latest | Apr 11, 2026 | [Open ↗](archive/latest) | [Light](archive/latest/swift_book_digital.pdf) · [Dark](archive/latest/swift_book_digital_dark.pdf) | [Light](archive/latest/swift_book_print.pdf) · [Dark](archive/latest/swift_book_print_dark.pdf) |
 
 ### Previous Versions
 
