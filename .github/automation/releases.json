@@ -1,8 +1,8 @@
 {
   "latest": {
-    "date": "2026-04-11",
-    "sha": "548787e005a48f1396fedee5e0151875bf3481ae",
-    "message": "Fix typo in OpaqueTypes Chapter (#453)\n\n<!-- If this pull request incorporates language changes from a Swift\nEvolution proposal, add the SE number in square brackets at the end of\nthe PR title. -->\n\n<!-- What's in this pull request? -->\nFix typo: \"Whatever shape is passed it\" -> \"Whatever shape is passed in\"\n\n<!-- Link to the issue that this pull request fixes, if applicable. -->"
+    "date": "2026-04-14",
+    "sha": "5a0f08c188230d5e3c69d2d26fe9628fc97dcee1",
+    "message": "Fix missing word in TheBasics.md (#457) (#458)\n\nAdd missing \"to\" in the sentence \"easier for you to find and fix\".\n\nresolves #457"
   },
   "releases": {
     "5.8/beta-1": {

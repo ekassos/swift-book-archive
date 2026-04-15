@@ -108,7 +108,7 @@ The latest numbered release, **6.3 (Beta 3)**, is the best choice for most reade
 | Version | Release Date | Folder | EPUB | Digital PDF | Print PDF |
 |---------|--------------|--------|------|-------------|-----------|
 | **6.3 (Beta 3) ★** | Mar 11, 2026 | [Open ↗](archive/6.3/beta-3) | [EPUB](archive/6.3/beta-3/swift_book.epub) | [Light](archive/6.3/beta-3/swift_book_digital.pdf) · [Dark](archive/6.3/beta-3/swift_book_digital_dark.pdf) | [Light](archive/6.3/beta-3/swift_book_print.pdf) · [Dark](archive/6.3/beta-3/swift_book_print_dark.pdf) |
-| Latest | Apr 11, 2026 | [Open ↗](archive/latest) | [EPUB](archive/latest/swift_book.epub) | [Light](archive/latest/swift_book_digital.pdf) · [Dark](archive/latest/swift_book_digital_dark.pdf) | [Light](archive/latest/swift_book_print.pdf) · [Dark](archive/latest/swift_book_print_dark.pdf) |
+| Latest | Apr 14, 2026 | [Open ↗](archive/latest) | [EPUB](archive/latest/swift_book.epub) | [Light](archive/latest/swift_book_digital.pdf) · [Dark](archive/latest/swift_book_digital_dark.pdf) | [Light](archive/latest/swift_book_print.pdf) · [Dark](archive/latest/swift_book_print_dark.pdf) |
 
 ### Previous Versions
 
