@@ -2,23 +2,25 @@
 
 **Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.
 
-Latest commit date: Apr 14, 2026
+Latest commit date: May 31, 2026
 
 ## Upstream Commit
 
-SHA: `5a0f08c188230d5e3c69d2d26fe9628fc97dcee1`
+SHA: `dd068529308cc52186fc511e25a0e3c6091f01bb`
 
 Commit message:
 ```text
-Fix missing word in TheBasics.md (#457) (#458)
+Improve Task cancellation sample code (#463)
 
-Add missing "to" in the sentence "easier for you to find and fix".
+- Remove the use of deprecated Task cancellation API from the Task
+cancellation section.
+- Improve the clarity of the Task cancellation sample code snippet.
 
-resolves #457
+Fixes: https://github.com/swiftlang/swift-book/issues/462
 ```
 
-- [View upstream commit](https://github.com/swiftlang/swift-book/commit/5a0f08c188230d5e3c69d2d26fe9628fc97dcee1)
-- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/5a0f08c188230d5e3c69d2d26fe9628fc97dcee1)
+- [View upstream commit](https://github.com/swiftlang/swift-book/commit/dd068529308cc52186fc511e25a0e3c6091f01bb)
+- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/dd068529308cc52186fc511e25a0e3c6091f01bb)
 
 ## Pick the edition that works for you.
 
