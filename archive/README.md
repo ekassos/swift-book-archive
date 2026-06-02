@@ -10,7 +10,7 @@ The latest numbered release, **6.3**, is the best choice for most readers, and m
 
 **Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.
 
-- [Latest](latest) (Mar 13, 2026)
+- [Latest](latest) (Jun 1, 2026)
 
 If you're working with a specific Swift version, choose the matching numbered release.
 

@@ -1,8 +1,8 @@
 {
   "latest": {
-    "date": "2026-03-13",
-    "sha": "3edebee849459d7e273c5361b8e3df35cffab3d2",
-    "message": "Add revision history entries"
+    "date": "2026-06-01",
+    "sha": "32d8432f089d7f590aacdd85e7a5849b0e770340",
+    "message": "Merge branch 'release/6.3'"
   },
   "releases": {
     "5.8/beta-1": {
