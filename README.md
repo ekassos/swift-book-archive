@@ -99,14 +99,14 @@ The PDF book is available in four editions to suit any setup.
 ## Choose a corresponding Swift version.
 
 <!-- VERSION-INDEX:START -->
-The latest numbered release, **6.3 (Beta 3)**, is the best choice for most readers, and mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/). 
+The latest numbered release, **6.3**, is the best choice for most readers, and mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/). 
 
 **Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.
 
 | Version | Release Date | Folder | EPUB | Digital PDF | Print PDF |
 |---------|--------------|--------|------|-------------|-----------|
-| **6.3 (Beta 3) ★** | Mar 11, 2026 | [Open ↗](archive/6.3/beta-3) | [EPUB](archive/6.3/beta-3/swift_book.epub) | [Light](archive/6.3/beta-3/swift_book_digital.pdf) · [Dark](archive/6.3/beta-3/swift_book_digital_dark.pdf) | [Light](archive/6.3/beta-3/swift_book_print.pdf) · [Dark](archive/6.3/beta-3/swift_book_print_dark.pdf) |
-| Latest | May 31, 2026 | [Open ↗](archive/latest) | [EPUB](archive/latest/swift_book.epub) | [Light](archive/latest/swift_book_digital.pdf) · [Dark](archive/latest/swift_book_digital_dark.pdf) | [Light](archive/latest/swift_book_print.pdf) · [Dark](archive/latest/swift_book_print_dark.pdf) |
+| **6.3 ★** | Mar 13, 2026 | [Open ↗](archive/6.3/fcs) | [EPUB](archive/6.3/fcs/swift_book.epub) | [Light](archive/6.3/fcs/swift_book_digital.pdf) · [Dark](archive/6.3/fcs/swift_book_digital_dark.pdf) | [Light](archive/6.3/fcs/swift_book_print.pdf) · [Dark](archive/6.3/fcs/swift_book_print_dark.pdf) |
+| Latest | Mar 13, 2026 | [Open ↗](archive/latest) | [EPUB](archive/latest/swift_book.epub) | [Light](archive/latest/swift_book_digital.pdf) · [Dark](archive/latest/swift_book_digital_dark.pdf) | [Light](archive/latest/swift_book_print.pdf) · [Dark](archive/latest/swift_book_print_dark.pdf) |
 
 ### Previous Versions
 
@@ -114,6 +114,7 @@ If you're working with a specific Swift version, choose the matching numbered re
 
 | Version | Release Date | Folder | EPUB | Digital PDF | Print PDF |
 |---------|--------------|--------|------|-------------|-----------|
+| └─ Beta 3 | Mar 11, 2026 | [Open ↗](archive/6.3/beta-3) | [EPUB](archive/6.3/beta-3/swift_book.epub) | [Light](archive/6.3/beta-3/swift_book_digital.pdf) · [Dark](archive/6.3/beta-3/swift_book_digital_dark.pdf) | [Light](archive/6.3/beta-3/swift_book_print.pdf) · [Dark](archive/6.3/beta-3/swift_book_print_dark.pdf) |
 | 6.2.3 | Dec 15, 2025 | [Open ↗](archive/6.2.3/fcs) | [EPUB](archive/6.2.3/fcs/swift_book.epub) | [Light](archive/6.2.3/fcs/swift_book_digital.pdf) · [Dark](archive/6.2.3/fcs/swift_book_digital_dark.pdf) | [Light](archive/6.2.3/fcs/swift_book_print.pdf) · [Dark](archive/6.2.3/fcs/swift_book_print_dark.pdf) |
 | 6.2.1 | Nov 3, 2025 | [Open ↗](archive/6.2.1/fcs) | [EPUB](archive/6.2.1/fcs/swift_book.epub) | [Light](archive/6.2.1/fcs/swift_book_digital.pdf) · [Dark](archive/6.2.1/fcs/swift_book_digital_dark.pdf) | [Light](archive/6.2.1/fcs/swift_book_print.pdf) · [Dark](archive/6.2.1/fcs/swift_book_print_dark.pdf) |
 | 6.2 | Sep 16, 2025 | [Open ↗](archive/6.2/fcs) | [EPUB](archive/6.2/fcs/swift_book.epub) | [Light](archive/6.2/fcs/swift_book_digital.pdf) · [Dark](archive/6.2/fcs/swift_book_digital_dark.pdf) | [Light](archive/6.2/fcs/swift_book_print.pdf) · [Dark](archive/6.2/fcs/swift_book_print_dark.pdf) |

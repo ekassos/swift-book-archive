@@ -1,8 +1,8 @@
 {
   "latest": {
-    "date": "2026-05-31",
-    "sha": "dd068529308cc52186fc511e25a0e3c6091f01bb",
-    "message": "Improve Task cancellation sample code (#463)\n\n- Remove the use of deprecated Task cancellation API from the Task\ncancellation section.\n- Improve the clarity of the Task cancellation sample code snippet.\n\nFixes: https://github.com/swiftlang/swift-book/issues/462"
+    "date": "2026-03-13",
+    "sha": "3edebee849459d7e273c5361b8e3df35cffab3d2",
+    "message": "Add revision history entries"
   },
   "releases": {
     "5.8/beta-1": {
@@ -89,6 +89,11 @@
       "date": "2026-03-11",
       "sha": "5396a77fc00d3f5ef4ed41e019ee71cf2de776dc",
       "tag": "swift-6.3-beta-3"
+    },
+    "6.3/fcs": {
+      "date": "2026-03-13",
+      "sha": "3edebee849459d7e273c5361b8e3df35cffab3d2",
+      "tag": "swift-6.3-fcs"
     }
   }
 }
