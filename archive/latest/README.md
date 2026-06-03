@@ -18,11 +18,11 @@ Merge branch 'release/6.3'
 
 ## Pick the edition that works for you.
 
-- [EPUB](swift_book.epub?raw=1)
-- [Digital Light PDF](swift_book_digital.pdf?raw=1)
-- [Digital Dark PDF](swift_book_digital_dark.pdf?raw=1)
-- [Print Light PDF](swift_book_print.pdf?raw=1)
-- [Print Dark PDF](swift_book_print_dark.pdf?raw=1)
+- [EPUB](./swift_book.epub?raw=1)
+- [Digital Light PDF](./swift_book_digital.pdf?raw=1)
+- [Digital Dark PDF](./swift_book_digital_dark.pdf?raw=1)
+- [Print Light PDF](./swift_book_print.pdf?raw=1)
+- [Print Dark PDF](./swift_book_print_dark.pdf?raw=1)
 
 ## More
 
