@@ -215,12 +215,15 @@ def generate_readme_table(
 
     for entry in reversed(versions):
         ordered_releases = list(reversed(entry["releases"]))
+        displayed_index = 0
         for index, release in enumerate(ordered_releases):
             is_recommended = (entry["version"], release["type"]) == recommended
             if only_recommended and not is_recommended:
                 continue
             if exclude_recommended and (entry["version"], release["type"]) == recommended:
                 continue
+            if displayed_index == 0 and index > 0:
+                lines.append(f"| {entry['version']} |  |  |  |  |  |")
             base_path = f"archive/{entry['version']}/{release['type']}"
             epub_files = [name for name in release["files"] if name == "swift_book.epub"]
             digital_files = [name for name in release["files"] if name.startswith("swift_book_digital")]
@@ -237,6 +240,7 @@ def generate_readme_table(
                 f"{render_file_links(base_path, digital_files)} | "
                 f"{render_file_links(base_path, print_files)} |"
             )
+            displayed_index += 1
     if latest_row is not None:
         lines.append(latest_row)
     return "\n".join(lines)
