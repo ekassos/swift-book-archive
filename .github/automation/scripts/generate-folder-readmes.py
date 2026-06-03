@@ -23,6 +23,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[3]
 BOOK_DIR = REPO_ROOT / "archive"
 DATA_PATH = REPO_ROOT / ".github" / "automation" / "releases.json"
+DOWNLOAD_BASE_URL = "https://raw.githubusercontent.com/ekassos/swift-book-archive/main"
 
 EDITION_FILES = {
     "swift_book.epub": "EPUB",
@@ -105,7 +106,8 @@ def edition_links(directory: Path) -> list[str]:
     for filename, label in EDITION_FILES.items():
         if (directory / filename).is_file():
             suffix = "" if filename == "swift_book.epub" else " PDF"
-            links.append(f"- [{label}{suffix}]({filename})")
+            archive_path = directory.relative_to(REPO_ROOT)
+            links.append(f"- [{label}{suffix}]({DOWNLOAD_BASE_URL}/{archive_path}/{filename})")
     return links
 
 

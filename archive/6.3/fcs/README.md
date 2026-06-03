@@ -8,11 +8,11 @@ This is the latest numbered release, and the best choice for most readers. It mi
 
 ## Pick the edition that works for you.
 
-- [EPUB](swift_book.epub)
-- [Digital Light PDF](swift_book_digital.pdf)
-- [Digital Dark PDF](swift_book_digital_dark.pdf)
-- [Print Light PDF](swift_book_print.pdf)
-- [Print Dark PDF](swift_book_print_dark.pdf)
+- [EPUB](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.3/fcs/swift_book.epub)
+- [Digital Light PDF](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.3/fcs/swift_book_digital.pdf)
+- [Digital Dark PDF](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.3/fcs/swift_book_digital_dark.pdf)
+- [Print Light PDF](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.3/fcs/swift_book_print.pdf)
+- [Print Dark PDF](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.3/fcs/swift_book_print_dark.pdf)
 
 ## More
 

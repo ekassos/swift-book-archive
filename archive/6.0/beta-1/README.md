@@ -6,11 +6,11 @@ Release date: Jun 10, 2024
 
 ## Pick the edition that works for you.
 
-- [EPUB](swift_book.epub)
-- [Digital Light PDF](swift_book_digital.pdf)
-- [Digital Dark PDF](swift_book_digital_dark.pdf)
-- [Print Light PDF](swift_book_print.pdf)
-- [Print Dark PDF](swift_book_print_dark.pdf)
+- [EPUB](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.0/beta-1/swift_book.epub)
+- [Digital Light PDF](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.0/beta-1/swift_book_digital.pdf)
+- [Digital Dark PDF](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.0/beta-1/swift_book_digital_dark.pdf)
+- [Print Light PDF](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.0/beta-1/swift_book_print.pdf)
+- [Print Dark PDF](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.0/beta-1/swift_book_print_dark.pdf)
 
 ## More
 

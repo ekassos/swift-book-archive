@@ -35,6 +35,7 @@ BOOK_FILES = [
 
 README_START = "<!-- VERSION-INDEX:START -->"
 README_END = "<!-- VERSION-INDEX:END -->"
+DOWNLOAD_BASE_URL = "https://raw.githubusercontent.com/ekassos/swift-book-archive/main"
 LINK_LABELS = {
     "swift_book.epub": "EPUB",
     "swift_book_digital.pdf": "Light",
@@ -190,7 +191,7 @@ def generate_readme_table(
     def render_file_links(base_path: str, filenames: list[str]) -> str:
         links = []
         for filename in filenames:
-            links.append(f"[{LINK_LABELS[filename]}]({base_path}/{filename})")
+            links.append(f"[{LINK_LABELS[filename]}]({DOWNLOAD_BASE_URL}/{base_path}/{filename})")
         return " · ".join(links) if links else "-"
 
     lines = [
