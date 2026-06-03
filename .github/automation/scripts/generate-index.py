@@ -190,7 +190,7 @@ def generate_readme_table(
     def render_file_links(base_path: str, filenames: list[str]) -> str:
         links = []
         for filename in filenames:
-            links.append(f"[{LINK_LABELS[filename]}]({base_path}/{filename})")
+            links.append(f"[{LINK_LABELS[filename]}]({base_path}/{filename}?raw=1)")
         return " · ".join(links) if links else "-"
 
     lines = [

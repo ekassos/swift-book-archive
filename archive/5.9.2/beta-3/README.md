@@ -6,11 +6,11 @@ Release date: Nov 14, 2023
 
 ## Pick the edition that works for you.
 
-- [EPUB](swift_book.epub)
-- [Digital Light PDF](swift_book_digital.pdf)
-- [Digital Dark PDF](swift_book_digital_dark.pdf)
-- [Print Light PDF](swift_book_print.pdf)
-- [Print Dark PDF](swift_book_print_dark.pdf)
+- [EPUB](swift_book.epub?raw=1)
+- [Digital Light PDF](swift_book_digital.pdf?raw=1)
+- [Digital Dark PDF](swift_book_digital_dark.pdf?raw=1)
+- [Print Light PDF](swift_book_print.pdf?raw=1)
+- [Print Dark PDF](swift_book_print_dark.pdf?raw=1)
 
 ## More
 

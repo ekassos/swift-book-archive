@@ -105,7 +105,7 @@ def edition_links(directory: Path) -> list[str]:
     for filename, label in EDITION_FILES.items():
         if (directory / filename).is_file():
             suffix = "" if filename == "swift_book.epub" else " PDF"
-            links.append(f"- [{label}{suffix}]({filename})")
+            links.append(f"- [{label}{suffix}]({filename}?raw=1)")
     return links
 
 
