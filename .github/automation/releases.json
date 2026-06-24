@@ -1,8 +1,8 @@
 {
   "latest": {
-    "date": "2026-06-05",
-    "sha": "149dbafc18fbbb44066a54dea8fcc1b755e9aaa9",
-    "message": "Fix a type name in prose to match code (#464)\n\nFixes: https://github.com/swiftlang/swift-book/issues/460"
+    "date": "2026-06-23",
+    "sha": "ef25a6f9cc4fcbf935b93c635c94d92a28614e13",
+    "message": "Correct spelling writeable -> writable (#470)\n\nThe rest of the book, and the standard library, spells this \"writable\".\nThat's the correct spelling per the style guide.  The remaining matches\nfor \"*eable\" in the book are words like \"cacheable\" and \"replaceable\"."
   },
   "releases": {
     "5.8/beta-1": {

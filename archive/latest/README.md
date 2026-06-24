@@ -2,21 +2,23 @@
 
 **Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.
 
-Latest commit date: Jun 5, 2026
+Latest commit date: Jun 23, 2026
 
 ## Upstream Commit
 
-SHA: `149dbafc18fbbb44066a54dea8fcc1b755e9aaa9`
+SHA: `ef25a6f9cc4fcbf935b93c635c94d92a28614e13`
 
 Commit message:
 ```text
-Fix a type name in prose to match code (#464)
+Correct spelling writeable -> writable (#470)
 
-Fixes: https://github.com/swiftlang/swift-book/issues/460
+The rest of the book, and the standard library, spells this "writable".
+That's the correct spelling per the style guide.  The remaining matches
+for "*eable" in the book are words like "cacheable" and "replaceable".
 ```
 
-- [View upstream commit](https://github.com/swiftlang/swift-book/commit/149dbafc18fbbb44066a54dea8fcc1b755e9aaa9)
-- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/149dbafc18fbbb44066a54dea8fcc1b755e9aaa9)
+- [View upstream commit](https://github.com/swiftlang/swift-book/commit/ef25a6f9cc4fcbf935b93c635c94d92a28614e13)
+- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/ef25a6f9cc4fcbf935b93c635c94d92a28614e13)
 
 ## Pick the edition that works for you.
 
