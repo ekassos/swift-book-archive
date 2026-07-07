@@ -1,8 +1,8 @@
 {
   "latest": {
-    "date": "2026-06-25",
-    "sha": "846a3b0b210d764541db72a2bfc784220ea3fa94",
-    "message": "Add a revision history entry for 6.4"
+    "date": "2026-07-06",
+    "sha": "1ea088bc3db78155340055dfda48aa235495e35c",
+    "message": "Add a technology abstract (#472)\n\n- **adds an abstract for the technology page (TSPL)**"
   },
   "releases": {
     "5.8/beta-1": {
