@@ -1,8 +1,8 @@
 {
   "latest": {
-    "date": "2026-06-23",
-    "sha": "ef25a6f9cc4fcbf935b93c635c94d92a28614e13",
-    "message": "Correct spelling writeable -> writable (#470)\n\nThe rest of the book, and the standard library, spells this \"writable\".\nThat's the correct spelling per the style guide.  The remaining matches\nfor \"*eable\" in the book are words like \"cacheable\" and \"replaceable\"."
+    "date": "2026-06-25",
+    "sha": "846a3b0b210d764541db72a2bfc784220ea3fa94",
+    "message": "Add a revision history entry for 6.4"
   },
   "releases": {
     "5.8/beta-1": {
@@ -94,6 +94,11 @@
       "date": "2026-03-13",
       "sha": "3edebee849459d7e273c5361b8e3df35cffab3d2",
       "tag": "swift-6.3-fcs"
+    },
+    "6.4/beta-3": {
+      "date": "2026-06-25",
+      "sha": "846a3b0b210d764541db72a2bfc784220ea3fa94",
+      "tag": "swift-6.4-beta-3"
     }
   }
 }

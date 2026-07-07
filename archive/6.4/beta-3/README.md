@@ -1,0 +1,20 @@
+# Swift 6.4 Beta 3
+
+Download PDF and EPUB editions of _The Swift Programming Language_ book for Swift 6.4 Beta 3.
+
+Release date: Jun 25, 2026
+
+This is the latest numbered release, and the best choice for most readers. It mirrors the version of _The Swift Programming Language_ that's currently available at [docs.swift.org](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/).
+
+## Pick the edition that works for you.
+
+- [EPUB](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.4/beta-3/swift_book.epub)
+- [Digital Light PDF](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.4/beta-3/swift_book_digital.pdf)
+- [Digital Dark PDF](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.4/beta-3/swift_book_digital_dark.pdf)
+- [Print Light PDF](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.4/beta-3/swift_book_print.pdf)
+- [Print Dark PDF](https://raw.githubusercontent.com/ekassos/swift-book-archive/main/archive/6.4/beta-3/swift_book_print_dark.pdf)
+
+## More
+
+- [Back to all Swift 6.4 versions](..)
+- [Back to all versions](../..)
