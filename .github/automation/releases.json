@@ -1,8 +1,8 @@
 {
   "latest": {
-    "date": "2026-07-06",
-    "sha": "1ea088bc3db78155340055dfda48aa235495e35c",
-    "message": "Add a technology abstract (#472)\n\n- **adds an abstract for the technology page (TSPL)**"
+    "date": "2026-07-14",
+    "sha": "29329996c4ec537de0b16e70609e2a6c4ecc2af7",
+    "message": "Add reference for body macros [SE-0415] (#443)\n\nFixes: rdar://171280404"
   },
   "releases": {
     "5.8/beta-1": {
