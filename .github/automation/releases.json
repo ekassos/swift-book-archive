@@ -1,8 +1,8 @@
 {
   "latest": {
-    "date": "2026-07-14",
-    "sha": "29329996c4ec537de0b16e70609e2a6c4ecc2af7",
-    "message": "Add reference for body macros [SE-0415] (#443)\n\nFixes: rdar://171280404"
+    "date": "2026-07-29",
+    "sha": "e327e452ef7c1b8e677738e7798f2a9e9925bc81",
+    "message": "Suppress the language version from the module name (#474)\n\nThis hides the (6.4 beta) extension on the module name from the name\nthat's presented in the combined view of Swift documentation (a merged\nset of DocC catalogs).\n\nThe \"easier\" method may be to update the title itself, but that also\nremoves it from interior content as well."
   },
   "releases": {
     "5.8/beta-1": {

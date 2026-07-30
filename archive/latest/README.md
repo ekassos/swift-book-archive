@@ -2,21 +2,26 @@
 
 **Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.
 
-Latest commit date: Jul 14, 2026
+Latest commit date: Jul 29, 2026
 
 ## Upstream Commit
 
-SHA: `29329996c4ec537de0b16e70609e2a6c4ecc2af7`
+SHA: `e327e452ef7c1b8e677738e7798f2a9e9925bc81`
 
 Commit message:
 ```text
-Add reference for body macros [SE-0415] (#443)
+Suppress the language version from the module name (#474)
 
-Fixes: rdar://171280404
+This hides the (6.4 beta) extension on the module name from the name
+that's presented in the combined view of Swift documentation (a merged
+set of DocC catalogs).
+
+The "easier" method may be to update the title itself, but that also
+removes it from interior content as well.
 ```
 
-- [View upstream commit](https://github.com/swiftlang/swift-book/commit/29329996c4ec537de0b16e70609e2a6c4ecc2af7)
-- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/29329996c4ec537de0b16e70609e2a6c4ecc2af7)
+- [View upstream commit](https://github.com/swiftlang/swift-book/commit/e327e452ef7c1b8e677738e7798f2a9e9925bc81)
+- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/e327e452ef7c1b8e677738e7798f2a9e9925bc81)
 
 ## Pick the edition that works for you.
 
