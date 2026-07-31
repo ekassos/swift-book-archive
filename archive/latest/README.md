@@ -2,26 +2,30 @@
 
 **Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.
 
-Latest commit date: Jul 29, 2026
+Latest commit date: Jul 30, 2026
 
 ## Upstream Commit
 
-SHA: `e327e452ef7c1b8e677738e7798f2a9e9925bc81`
+SHA: `67e31529a833bacadff9d4d4ad521910b9c3c0c2`
 
 Commit message:
 ```text
-Suppress the language version from the module name (#474)
+Revert "Suppress the language version from the module name (#474)" (#475)
 
-This hides the (6.4 beta) extension on the module name from the name
-that's presented in the combined view of Swift documentation (a merged
-set of DocC catalogs).
+This reverts commit e327e452ef7c1b8e677738e7798f2a9e9925bc81, reversing
+changes made to 29329996c4ec537de0b16e70609e2a6c4ecc2af7.
 
-The "easier" method may be to update the title itself, but that also
-removes it from interior content as well.
+After getting it in place, I learned that @DisplayName() didn't have the
+follow-through impact I'd presumed it did - so this is effectively a
+no-op, and I didn't want to leave useless artifacts around. Turns out
+that DocC only uses `@DisplayName` directive when there's an explicit
+module from a surrounding package. When you're building from a "bare"
+DocC catalog with a central page identified by `@TechnologyRoot`, the H1
+value of that page is overrides any values.
 ```
 
-- [View upstream commit](https://github.com/swiftlang/swift-book/commit/e327e452ef7c1b8e677738e7798f2a9e9925bc81)
-- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/e327e452ef7c1b8e677738e7798f2a9e9925bc81)
+- [View upstream commit](https://github.com/swiftlang/swift-book/commit/67e31529a833bacadff9d4d4ad521910b9c3c0c2)
+- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/67e31529a833bacadff9d4d4ad521910b9c3c0c2)
 
 ## Pick the edition that works for you.
 
