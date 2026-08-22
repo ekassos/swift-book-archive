@@ -1,8 +1,8 @@
 {
   "latest": {
-    "date": "2026-08-18",
-    "sha": "fb79af5d00ddd4e64d5431f33cfe7a0b17b6e3b8",
-    "message": "Correct the Xcode version number (#477)\n\nCorrects a statement in Version Compatibility about which version of Xcode contains Swift 6.4.\n\nFixes: rdar://184937410 (TSPL: Version compatibility chapter incorrectly says Xcode 26.4 includes Swift 6.4.)"
+    "date": "2026-08-21",
+    "sha": "b634f094d0657cd3ccb3a488107db39bf346194b",
+    "message": "Add info about protocols with superclass requirement [SE-0156] (#447)\n\nAdd info about protocols with superclass requirement.\n\nFixes: https://github.com/apple/swift-book/issues/445\nFixes: rdar://171309018"
   },
   "releases": {
     "5.8/beta-1": {
