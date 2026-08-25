@@ -2,24 +2,22 @@
 
 **Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.
 
-Latest commit date: Aug 21, 2026
+Latest commit date: Aug 24, 2026
 
 ## Upstream Commit
 
-SHA: `b634f094d0657cd3ccb3a488107db39bf346194b`
+SHA: `3c9dcf6530bd3088cff3b24a5f953bc3a803d65e`
 
 Commit message:
 ```text
-Add info about protocols with superclass requirement [SE-0156] (#447)
+Add reference for raw identifiers [SE-0451] (#471)
 
-Add info about protocols with superclass requirement.
-
-Fixes: https://github.com/apple/swift-book/issues/445
-Fixes: rdar://171309018
+Fixes: https://github.com/swiftlang/swift-book/issues/389
+Fixes: rdar://148350120
 ```
 
-- [View upstream commit](https://github.com/swiftlang/swift-book/commit/b634f094d0657cd3ccb3a488107db39bf346194b)
-- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/b634f094d0657cd3ccb3a488107db39bf346194b)
+- [View upstream commit](https://github.com/swiftlang/swift-book/commit/3c9dcf6530bd3088cff3b24a5f953bc3a803d65e)
+- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/3c9dcf6530bd3088cff3b24a5f953bc3a803d65e)
 
 ## Pick the edition that works for you.
 

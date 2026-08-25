@@ -1,8 +1,8 @@
 {
   "latest": {
-    "date": "2026-08-21",
-    "sha": "b634f094d0657cd3ccb3a488107db39bf346194b",
-    "message": "Add info about protocols with superclass requirement [SE-0156] (#447)\n\nAdd info about protocols with superclass requirement.\n\nFixes: https://github.com/apple/swift-book/issues/445\nFixes: rdar://171309018"
+    "date": "2026-08-24",
+    "sha": "3c9dcf6530bd3088cff3b24a5f953bc3a803d65e",
+    "message": "Add reference for raw identifiers [SE-0451] (#471)\n\nFixes: https://github.com/swiftlang/swift-book/issues/389\nFixes: rdar://148350120"
   },
   "releases": {
     "5.8/beta-1": {
