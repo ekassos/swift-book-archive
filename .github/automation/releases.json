@@ -1,8 +1,8 @@
 {
   "latest": {
-    "date": "2026-08-31",
-    "sha": "8e6ed2a76b95e3695a4384fc47f0c339a2b22a73",
-    "message": "Add punctuation to capture list comments (#483)"
+    "date": "2026-09-15",
+    "sha": "1c0598430507e6c2b9a0f068b6dd7c618392fea6",
+    "message": "Skip a redirect in some links (#497)"
   },
   "releases": {
     "5.8/beta-1": {
