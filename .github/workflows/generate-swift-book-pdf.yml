@@ -23,6 +23,10 @@ on:
   schedule:
     - cron: '18 0 * * *'  # Every day at 00:18 UTC
 
+concurrency:
+  group: swift-book-archive
+  cancel-in-progress: false
+
 jobs:
   generate-pdfs:
     runs-on: macos-latest
