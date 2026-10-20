@@ -99,6 +99,11 @@
       "date": "2026-06-25",
       "sha": "846a3b0b210d764541db72a2bfc784220ea3fa94",
       "tag": "swift-6.4-beta-3"
+    },
+    "6.4/fcs": {
+      "date": "2026-09-25",
+      "sha": "0e8aa8c0fb7651714aaafa2c63a974d25244133e",
+      "tag": "swift-6.4-fcs"
     }
   }
 }
