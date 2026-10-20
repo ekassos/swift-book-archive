@@ -31,9 +31,22 @@ UPSTREAM_REPO_URL = "https://github.com/swiftlang/swift-book.git"
 TAG_PATTERN = re.compile(r"^swift-(?P<version>\d+(?:\.\d+){0,2})-(?P<release>fcs|beta-\d+)$")
 
 
+BOOK_FILES = (
+    "swift_book.epub",
+    "swift_book_cover.png",
+    "swift_book_digital.pdf",
+    "swift_book_digital_dark.pdf",
+    "swift_book_print.pdf",
+    "swift_book_print_dark.pdf",
+)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sha", help="Specific upstream commit SHA to record as latest.")
+    parser.add_argument("--tag", help="Record a completed tagged build without changing latest.")
+    parser.add_argument("--build-matrix", action="store_true",
+                        help="Print missing tagged releases and latest build without changing files.")
     parser.add_argument(
         "--sync-all-tags",
         action="store_true",
@@ -161,7 +174,7 @@ def resolve_upstream_repo(
     return repo_path, tempdir
 
 
-def update_latest_entry(manifest: dict, repo_dir: Path, sha: str | None, published_paths: set[str]) -> None:
+def update_latest_entry(manifest: dict, repo_dir: Path, sha: str | None) -> None:
     target = sha or "HEAD"
     latest_sha = git_output(repo_dir, "rev-parse", target)
     latest_date = git_output(repo_dir, "show", "-s", "--format=%cs", latest_sha)
@@ -173,17 +186,14 @@ def update_latest_entry(manifest: dict, repo_dir: Path, sha: str | None, publish
         "message": latest_message,
     }
 
-    tags = [tag for tag in git_output(repo_dir, "tag", "--points-at", latest_sha).splitlines() if tag]
-    for tag in tags:
-        release_path = normalize_release_path(tag)
-        if release_path is None or release_path not in published_paths:
-            continue
-        manifest["releases"][release_path] = {
-            **manifest["releases"].get(release_path, {}),
-            "date": latest_date,
-            "sha": latest_sha,
-            "tag": tag,
-        }
+
+def update_tag_entry(manifest: dict, repo_dir: Path, tag: str) -> None:
+    release_path = normalize_release_path(tag)
+    if release_path is None:
+        raise ValueError(f"Unsupported release tag: {tag}")
+    if not archive_complete(BOOK_DIR / release_path):
+        raise ValueError(f"Incomplete archive for {tag}: {release_path}")
+    manifest["releases"][release_path] = tag_metadata(repo_dir, tag)
 
 
 def sync_all_tags(manifest: dict, repo_dir: Path, published_paths: set[str]) -> int:
@@ -217,6 +227,47 @@ def sync_all_tags(manifest: dict, repo_dir: Path, published_paths: set[str]) -> 
     return count
 
 
+
+def tag_metadata(repo_dir: Path, tag: str) -> dict:
+    sha = git_output(repo_dir, "rev-parse", f"refs/tags/{tag}^{{commit}}")
+    # Annotated tags have a tagger date; lightweight tags use the commit date.
+    date = git_output(
+        repo_dir, "for-each-ref", "--format=%(creatordate:short)", f"refs/tags/{tag}"
+    )
+    return {"date": date, "sha": sha, "tag": tag}
+
+
+def archive_complete(directory: Path) -> bool:
+    return all((directory / name).is_file() and (directory / name).stat().st_size > 0
+               for name in BOOK_FILES)
+
+
+def discover_builds(repo_dir: Path, manifest: dict, archive: Path, target_sha: str) -> dict:
+    builds = []
+    # Scan every release tag, including tags added later to previously built commits
+    # and release branches that are not reachable from main.
+    for tag in git_output(repo_dir, "tag", "--list", "swift-*").splitlines():
+        release_path = normalize_release_path(tag)
+        if release_path is None:
+            continue
+        entry = tag_metadata(repo_dir, tag)
+        if git_output(repo_dir, "ls-tree", "-d", "--name-only", entry["sha"], "--", "TSPL.docc") != "TSPL.docc":
+            # The renderer consumes DocC; older tags use the unsupported RST format.
+            continue
+        recorded = manifest.get("releases", {}).get(release_path, {})
+        if (recorded.get("tag") == tag and recorded.get("sha") == entry["sha"]
+                and archive_complete(archive / release_path)):
+            continue
+        builds.append({"sha": entry["sha"], "tag": tag, "path": release_path})
+
+    target_sha = git_output(repo_dir, "rev-parse", f"{target_sha}^{{commit}}")
+    if (manifest.get("latest", {}).get("sha") != target_sha
+            or not archive_complete(archive / "latest")):
+        # Latest is its own build: backfills must never replace it with older content.
+        builds.append({"sha": target_sha, "tag": "", "path": "latest"})
+    return {"include": builds}
+
+
 def main() -> None:
     args = parse_args()
     manifest = load_manifest()
@@ -224,9 +275,16 @@ def main() -> None:
     repo_dir, tempdir = resolve_upstream_repo(args.upstream_repo)
 
     try:
+        if args.build_matrix:
+            print(json.dumps(discover_builds(repo_dir, manifest, BOOK_DIR, args.sha or "HEAD"),
+                             separators=(",", ":")))
+            return
         updated_tags = sync_all_tags(manifest, repo_dir, published_paths) if args.sync_all_tags else 0
         if args.sha:
-            update_latest_entry(manifest, repo_dir, args.sha, published_paths)
+            update_latest_entry(manifest, repo_dir, args.sha)
+        if args.tag:
+            update_tag_entry(manifest, repo_dir, args.tag)
+            updated_tags += 1
         write_manifest(manifest)
     finally:
         if tempdir is not None:
