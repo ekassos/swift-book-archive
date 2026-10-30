@@ -2,19 +2,22 @@
 
 **Latest** is a continuously updated preview of _The Swift Programming Language_ from the source repository and may include unpublished changes before an official release.
 
-Latest commit date: Sep 15, 2026
+Latest commit date: Oct 28, 2026
 
 ## Upstream Commit
 
-SHA: `1c0598430507e6c2b9a0f068b6dd7c618392fea6`
+SHA: `16a2a4caa408c86fc85bde1e1dfff4745b6e454c`
 
 Commit message:
 ```text
-Skip a redirect in some links (#497)
+Add reference for @implementation and @c [SE-0436] [SE-0495] (#435)
+
+Fixes: rdar://165874096
+Fixes: rdar://165873615
 ```
 
-- [View upstream commit](https://github.com/swiftlang/swift-book/commit/1c0598430507e6c2b9a0f068b6dd7c618392fea6)
-- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/1c0598430507e6c2b9a0f068b6dd7c618392fea6)
+- [View upstream commit](https://github.com/swiftlang/swift-book/commit/16a2a4caa408c86fc85bde1e1dfff4745b6e454c)
+- [Browse upstream repository](https://github.com/swiftlang/swift-book/tree/16a2a4caa408c86fc85bde1e1dfff4745b6e454c)
 
 ## Pick the edition that works for you.
 
